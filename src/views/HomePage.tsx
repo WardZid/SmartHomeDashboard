@@ -1,13 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
 const HomePage: React.FC = () => {
   return (
     <>
       <div className='h-screen overflow-hidden'>
+        
 
-        <Navbar />
-        <div className="h-screen overflow-y-scroll">
+        <nav className="flex justify-between items-center bg-transparent py-4 px-10 absolute w-full">
+          <div className="text-white text-xl font-bold px-4 py-2 bg-opacity-10 bg-off-white rounded">Smart Home Automation Dashboard</div>
+          <div>
+            <Link to="/login" className="text-white bg-light-blue px-4 py-2 rounded-md">Login</Link>
+            {/* <Link to="/signup" className="bg-light-blue text-white px-4 py-2 rounded-md mr-4">Sign Up</Link> */}
+          </div>
+        </nav>
+
+        <div className="h-screen overflow-y-scroll" >
+
 
           <section className="h-screen flex flex-col justify-center items-center bg-orange text-white snap-align-start">
             <h1 className="text-4xl font-bold mb-4">Welcome to Smart Home Automation</h1>
