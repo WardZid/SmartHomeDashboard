@@ -1,17 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Logo from '../components/Logo';
+import WatchingCircle from '../components/WatchingCircle';
 
 const HomePage: React.FC = () => {
+
+  const numRows = 12;
+  const numCells = 24;
+
+  const renderTable = () => {
+    const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      const cells = [];
+      for (let j = 0; j < numCells; j++) {
+        cells.push(<td key={j} className='p-2'><WatchingCircle innerCircleColor="#F05622"/></td>);
+      }
+      rows.push(<tr key={i}>{cells}</tr>);
+    }
+    return rows;
+  };
+
   return (
     <>
       <div className='h-screen overflow-hidden'>
-        
+
 
         <nav className="flex justify-between items-center bg-transparent py-4 px-10 absolute w-full">
-          <div className="text-white text-xl font-bold px-4 py-2 bg-opacity-10 bg-off-white rounded">Smart Home Automation Dashboard</div>
+          <Logo />
           <div>
-            <Link to="/login" className="text-white bg-light-blue px-4 py-2 rounded-md">Login</Link>
+            <Link to="/login" className="font-bold text-dark-blue bg-off-white px-4 py-2 rounded-full">Login</Link>
             {/* <Link to="/signup" className="bg-light-blue text-white px-4 py-2 rounded-md mr-4">Sign Up</Link> */}
           </div>
         </nav>
@@ -36,6 +53,13 @@ const HomePage: React.FC = () => {
           <section className="h-screen flex flex-col justify-center items-center bg-light-blue text-dark-blue snap-align-start">
             <h2 className="text-3xl font-bold mb-4">Get Started Today</h2>
             <p className="text-lg text-center">Transform your home into a smart home today with our easy-to-use dashboard.</p>
+          </section>
+          <section className="h-screen flex flex-col justify-center items-center bg-orange text-dark-blue snap-align-start">
+          <table>
+                <tbody>
+                    {renderTable()}
+                </tbody>
+            </table>
           </section>
         </div>
 
