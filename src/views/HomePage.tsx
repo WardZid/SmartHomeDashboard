@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
     for (let i = 0; i < numRows; i++) {
       const cells = [];
       for (let j = 0; j < numCells; j++) {
-        cells.push(<td key={j} className='p-2'><WatchingCircle innerCircleColor="#F05622"/></td>);
+        cells.push(<td key={j} className='p-2'><WatchingCircle innerCircleColor="#F05622" outerCircleColor='#EEEEEE'/></td>);
       }
       rows.push(<tr key={i}>{cells}</tr>);
     }

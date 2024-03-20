@@ -2,9 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 
 interface WatchingCircleProps {
     innerCircleColor: string;
+    outerCircleColor: string;
 }
 
-const WatchingCircle: React.FC<WatchingCircleProps> = ({ innerCircleColor }) => {
+const WatchingCircle: React.FC<WatchingCircleProps> = ({ innerCircleColor, outerCircleColor  }) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const [innerCirclePosition, setInnerCirclePosition] = useState<{ x: number; y: number }>({ x: 16, y: 24 });
 
@@ -43,7 +44,7 @@ const WatchingCircle: React.FC<WatchingCircleProps> = ({ innerCircleColor }) => 
     return (
         <>
             <svg ref={svgRef} width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="16" cy="16" r="16" fill="#EEEEEE" stroke="black" strokeWidth="0" />
+                <circle cx="16" cy="16" r="16" fill={outerCircleColor} stroke="black" strokeWidth="0" />
                 <circle cx={innerCirclePosition.x} cy={innerCirclePosition.y} r="4" fill={innerCircleColor} stroke="black" strokeWidth="0" />
             </svg>
         </>

@@ -1,10 +1,14 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const LoginPage: React.FC = () => {
   return (
     <div className='h-screen'>
+      <nav className="flex justify-between items-center bg-transparent py-4 px-10 absolute w-full">
+          <Logo />
+      </nav>
+
       <div className="flex h-full">
         <div className="w-1/2 bg-gray-100 flex items-center justify-center"></div>
         <div className="w-1/2 bg-gray-300 flex items-center justify-center">
