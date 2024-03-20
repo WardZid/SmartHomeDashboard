@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
         <nav className="flex justify-between items-center bg-transparent py-4 px-10 absolute w-full">
           <Logo />
           <div>
-            <Link to="/login" className="font-bold text-dark-blue bg-off-white px-4 py-2 rounded-full">Login</Link>
+            <Link to="/login" className="font-bold text-dark-blue bg-off-white px-4 py-2 rounded-full">Get Started!</Link>
             {/* <Link to="/signup" className="bg-light-blue text-white px-4 py-2 rounded-md mr-4">Sign Up</Link> */}
           </div>
         </nav>
