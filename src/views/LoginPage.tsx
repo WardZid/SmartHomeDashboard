@@ -9,9 +9,9 @@ const LoginPage: React.FC = () => {
           <Logo />
       </nav>
 
-      <div className="flex h-full bg-cover bg-center" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg-log-in.jpg)` }}>
+      <div className="flex h-full bg-center" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg-log-in.jpg)` }}>
         
-        <div className="w-full bg-gray-300 bg-opacity-10 flex items-center justify-center">
+        <div className="w-full bg-gray-300 bg-opacity-20 flex items-center justify-center">
           
           <div className="max-w-md w-full p-10 bg-off-white rounded-xl">
             <h2 className="text-2xl mb-4">Welcome Home!</h2>
