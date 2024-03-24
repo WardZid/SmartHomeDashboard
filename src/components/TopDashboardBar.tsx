@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WatchingCircle from "./WatchingCircle";
 import * as user from '../models/User'
 
@@ -39,7 +39,7 @@ const TopDashboardBar: React.FC = () => {
                     <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
                         onClick={handleSettings}>
                         Settings
-                        </button>
+                    </button>
                     <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
                         onClick={handleLogout}>
                         Log Out

@@ -1,14 +1,14 @@
 import * as dbAPI from "../utils/databaseAPI";
 import * as lsAPI from "../utils/localStorage";
 
-interface UserInfo {
-    _id: string;
-    first_name: string;
-    last_name: string;
+interface User {
+  _id: string;
+  first_name: string;
+  last_name: string;
 }
 
-export async function getUserInfo(): Promise<UserInfo | null> {
-  let userInfo: UserInfo | null = lsAPI.getUserInfoFromSessionStorage();
+export async function getUserInfo(): Promise<User | null> {
+  let userInfo: User| null = lsAPI.getUserInfoFromSessionStorage();
   if (userInfo == null) {
     userInfo = await dbAPI.fetchUserInfo();
     if (userInfo) {
