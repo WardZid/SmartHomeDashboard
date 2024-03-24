@@ -42,11 +42,12 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
             onClick={handleRoomClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            style={{ opacity: isDeleting ? 0.5 : 1 }}
         >
             <h2 className={`text-lg text-white `}>{room.room_name}</h2>
             {isHovered && (
                 <img
-                    className="h-4 relative top-2 right-0"
+                    className={`h-4 relative top-2 right-0`}
                     src={`${process.env.PUBLIC_URL}/icons/delete-room.png`}
                     alt=""
                     onClick={handleDeleteClick}
