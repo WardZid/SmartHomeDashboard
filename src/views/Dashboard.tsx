@@ -26,10 +26,7 @@ const Dashboard = () => {
       }
     };
 
-    checkLoggedIn();
-  }, []);
 
-  useEffect(() => {
     const fetchRooms = async () => {
       try {
         const roomsData = await room.getRooms();
@@ -40,6 +37,7 @@ const Dashboard = () => {
       }
     };
 
+    checkLoggedIn();
     fetchRooms();
   }, []);
 
@@ -85,8 +83,7 @@ const Dashboard = () => {
 
         <div className="bg-dark-blue pt-4 w-52">
 
-          <div className="py-1 px-2 mx-2 hover:bg-slate-700 cursor-pointer rounded-xl flex flex-col"
-            onClick={handleCreateRoom}>
+          <div className="py-1 px-2 mx-2 hover:bg-slate-700 cursor-pointer rounded-xl flex flex-col">
             <input
               type="text"
               className="text-lg text-white px-2 bg-transparent border-none focus:outline-none"
@@ -116,7 +113,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div>
+        <div className='flex-grow'>
           {/* Render RoomDashboard component if a room is selected */}
           {selectedRoom && <RoomDashboard roomId={selectedRoom._id} />}
         </div>
