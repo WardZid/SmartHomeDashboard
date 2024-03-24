@@ -1,14 +1,13 @@
 // Function to set cookies
-export function setCookie(name: string, value: string, expirySeconds: number) {
+export function setCookie(name, value, expirySeconds) {
     const d = new Date();
     d.setTime(d.getTime() + expirySeconds * 1000); // Convert seconds to milliseconds
     const expires = "expires=" + d.toUTCString();
     document.cookie =
       name + "=" + value + ";" + expires + ";path=/;SameSite=Strict;Secure;";
   }
-  
   // Function to get cookie value by name
-  export function getCookie(name: string): string {
+  export function getCookie(name) {
     const cookieName = name + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieArray = decodedCookie.split(";");
@@ -23,9 +22,7 @@ export function setCookie(name: string, value: string, expirySeconds: number) {
     }
     return "";
   }
-  
-  // Function to clear all cookies
-  export function clearAllCookies() {
+  function clearAllCookies() {
     const cookies = document.cookie.split(";");
   
     for (let i = 0; i < cookies.length; i++) {
@@ -36,55 +33,43 @@ export function setCookie(name: string, value: string, expirySeconds: number) {
     }
   }
   
-  // Function to set access token cookie
-  export function setAccessToken(accessToken: string, expiry: number) {
+  export function setAccessToken(accessToken, expiry) {
     setCookie("accessToken", accessToken, expiry);
   }
-  
-  // Function to set refresh token cookie
-  export function setRefreshToken(refreshToken: string, expiry: number) {
+  export function setRefreshToken(refreshToken, expiry) {
     setCookie("refreshToken", refreshToken, expiry);
   }
-  
-  // Function to set user ID cookie
-  export function setUserID(userID: string, expiry: number) {
+  export function setUserID(userID, expiry) {
     setCookie("userID", userID, expiry);
   }
   
-  // Function to get access token cookie
-  export function getAccessToken(): string {
+  export function getAccessToken() {
     return getCookie("accessToken");
   }
-  
-  // Function to get refresh token cookie
-  export function getRefreshToken(): string {
+  export function getRefreshToken() {
     return getCookie("refreshToken");
   }
-  
-  // Function to get user ID cookie
-  export function getUserID(): string {
+  export function getUserID() {
     return getCookie("userID");
   }
   
-  // Function to set user info to session storage
-  export function setUserInfoToSessionStorage(userInfo: any) {
+  
+  export function setUserInfoToSessionStorage(userInfo){
     sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
   }
-  
-  // Function to get user info from session storage
-  export function getUserInfoFromSessionStorage(): any {
+  export function getUserInfoFromSessionStorage(){
     const userInfoString = sessionStorage.getItem('userInfo');
-    return JSON.parse(userInfoString || "");
+    return JSON.parse(userInfoString);
   }
   
-  // Function to clear session storage and all cookies
-  export function clear() {
+  export function clear(){
     sessionStorage.clear();
     clearAllCookies();
   }
   
-  // Function to check if a cookie has expired
-  export function isCookieExpired(cookieName: string): boolean {
+  
+  
+  export function isCookieExpired(cookieName) {
     const cookieValue = getCookie(cookieName);
     if (!cookieValue) {
       // Cookie doesn't exist
@@ -104,4 +89,3 @@ export function setCookie(name: string, value: string, expirySeconds: number) {
     // If there's no 'expires' attribute, the cookie doesn't have an expiration date
     return false;
   }
-  

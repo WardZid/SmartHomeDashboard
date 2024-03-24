@@ -1,5 +1,5 @@
 import * as dbAPI from "../utils/databaseAPI";
-import * as lsAPI from "../utils/storageUtils";
+import * as lsAPI from "../utils/localStorage";
 
 interface UserInfo {
     _id: string;

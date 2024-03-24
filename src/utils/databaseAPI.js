@@ -1,4 +1,4 @@
-import * as lsAPI from "./storageUtils";
+import * as lsAPI from "./localStorage";
 import * as user from "../models/User"
 
 const loginEndpoint =

@@ -1,10 +1,29 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import TopDashboardBar from '../components/TopDashboardBar';
+import { Link, useNavigate } from 'react-router-dom';
+import * as user from '../models/User';
 
 const Dashboard = () => {
+  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const loggedIn = await user.isLoggedIn();
+      if (!loggedIn) {
+        // If not logged in, sign out and return null
+        user.signOut();
+        navigate('/login');
+      }
+    };
+
+    checkLoggedIn();
+  }, []);
+
   return (
     <div>
       <header>
-        <h1>Dashboard</h1>
+        <TopDashboardBar/>
       </header>
       <main>
         
