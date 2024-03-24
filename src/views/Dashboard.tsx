@@ -11,7 +11,7 @@ const Dashboard = () => {
     const checkLoggedIn = async () => {
       const loggedIn = await user.isLoggedIn();
       if (!loggedIn) {
-        // If not logged in, sign out and return null
+        // If not logged in, sign out and redirect to login
         user.signOut();
         navigate('/login');
       }

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 interface WatchingCircleProps {
     innerCircleColor: string;
@@ -6,6 +7,7 @@ interface WatchingCircleProps {
 }
 
 const WatchingCircle: React.FC<WatchingCircleProps> = ({ innerCircleColor, outerCircleColor  }) => {
+    const navigate = useNavigate();
     const svgRef = useRef<SVGSVGElement>(null);
     const [innerCirclePosition, setInnerCirclePosition] = useState<{ x: number; y: number }>({ x: 16, y: 24 });
 
@@ -41,9 +43,15 @@ const WatchingCircle: React.FC<WatchingCircleProps> = ({ innerCircleColor, outer
         };
     }, []);
 
+    const handleEyeClick = () => {
+        navigate("/");
+    };
     return (
         <>
-            <svg ref={svgRef} width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <svg 
+            className="cursor-pointer"
+            ref={svgRef} width="32" height="32" xmlns="http://www.w3.org/2000/svg"
+            onClick={handleEyeClick}>
                 <circle cx="16" cy="16" r="16" fill={outerCircleColor} stroke="black" strokeWidth="0" />
                 <circle cx={innerCirclePosition.x} cy={innerCirclePosition.y} r="4" fill={innerCircleColor} stroke="black" strokeWidth="0" />
             </svg>

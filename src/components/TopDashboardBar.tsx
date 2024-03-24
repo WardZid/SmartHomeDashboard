@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import WatchingCircle from "./WatchingCircle";
 import * as user from '../models/User'
 
 const TopDashboardBar: React.FC = () => {
+    const navigate = useNavigate();
     const [fullName, setFullName] = useState<string>("");
 
     useEffect(() => {
@@ -19,15 +21,29 @@ const TopDashboardBar: React.FC = () => {
             });
     }, []); // Empty dependency array ensures the effect runs only once after the initial render
 
-
+    const handleLogout = () => {
+        user.signOut();
+        navigate("/login");
+    };
+    const handleSettings = () => {
+    };
     return (
         <>
             <nav className="flex justify-between items-center bg-off-white px-4 py-2">
-                <WatchingCircle outerCircleColor="#042A35" innerCircleColor="#EEEEEE" />
-                <h1>Hello, {fullName}!</h1>
                 <div className="flex justify-center items-center">
-                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300">Settings</button>
-                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300">Log Out</button>
+                    <WatchingCircle outerCircleColor="#042A35" innerCircleColor="#EEEEEE" />
+                    <h1 className="px-2">Hello, {fullName}!</h1>
+                </div>
+
+                <div className="flex justify-center items-center">
+                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
+                        onClick={handleSettings}>
+                        Settings
+                        </button>
+                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
+                        onClick={handleLogout}>
+                        Log Out
+                    </button>
                 </div>
             </nav>
         </>

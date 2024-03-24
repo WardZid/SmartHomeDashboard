@@ -5,9 +5,9 @@ import * as dbAPI from '../utils/databaseAPI'
 import * as user from '../models/User'
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkLoggedIn = async () => {
