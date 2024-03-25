@@ -1,7 +1,7 @@
 import * as dbAPI from "../utils/databaseAPI";
 import * as lsAPI from "../utils/localStorage";
 
-interface User {
+export interface User {
   _id: string;
   first_name: string;
   last_name: string;
