@@ -1,5 +1,5 @@
 import * as lsAPI from "./localStorage";
-import * as user from "../models/User"
+import * as user from "../models/User";
 
 const loginEndpoint =
   "https://realm.mongodb.com/api/client/v2.0/app/data-rtanz/auth/providers/local-userpass/login";
@@ -120,7 +120,7 @@ async function updateOne(collectionName, updateData, filterId) {
     },
     update: {
       $set: {
-        ...updateData
+        ...updateData,
       },
     },
   };
@@ -235,9 +235,25 @@ export async function getWidgets(roomId) {
 }
 
 export async function updateWidgetLocation(widgetId, row, col) {
-  const updateData ={
+  const updateData = {
     row: row,
     col: col,
-  }
-  return await updateOne("widgets",updateData,widgetId);
+  };
+  return await updateOne("widgets", updateData, widgetId);
+}
+
+export async function updateDeviceState(deviceId, state) {
+  const updateData = {
+    "measurement.state": state,
+  };
+  return await updateOne("devices", updateData, deviceId);
+}
+
+export async function getDevice(deviceId) {
+  const requestData = {
+    filter: {
+      _id: { $oid: deviceId },
+    },
+  };
+  return await findOne("devices", requestData);
 }

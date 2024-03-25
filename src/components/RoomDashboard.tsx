@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import * as widget from "../models/Widget";
+import * as widgetModel from "../models/Widget";
+import WidgetItem from "./WidgetItem";
 
 
 interface RoomDashboardProps {
@@ -7,14 +8,14 @@ interface RoomDashboardProps {
 }
 
 const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
-  const [widgets, setWidgets] = useState<widget.Widget[]>([]);
+  const [widgets, setWidgets] = useState<widgetModel.Widget[]>([]);
 
 
   useEffect(() => {
 
     const fetchWidgts = async () => {
       try {
-        const widgetsData = await widget.getWidgets(roomId);
+        const widgetsData = await widgetModel.getWidgets(roomId);
         setWidgets(widgetsData);
         console.log(widgetsData);
       } catch (error) {
@@ -26,8 +27,10 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
   }, [roomId]);
 
   return (
-    <div>
-      
+    <div className="flex flex-row">
+      {widgets.map((widget) => (
+        <WidgetItem key={widget._id} widget={widget} />
+      ))}
     </div>
   );
 };
