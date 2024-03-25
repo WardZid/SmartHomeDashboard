@@ -51,7 +51,7 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
                     src={`${process.env.PUBLIC_URL}/icons/delete-room.png`}
                     alt=""
                     onClick={handleDeleteClick}
-                    style={{ opacity: isDeleting ? 0.5 : 1 }}
+                    style={{ opacity: isDeleting ? 0.5 : 0.8 }}
                 />
             )}
         </div>

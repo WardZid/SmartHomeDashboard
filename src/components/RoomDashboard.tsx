@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import * as widget from "../models/Widget";
 
 
 interface RoomDashboardProps {
@@ -6,19 +7,27 @@ interface RoomDashboardProps {
 }
 
 const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
-  const [roomData, setRoomData] = useState<any>(null); // Update the type as per your fetched data structure
+  const [widgets, setWidgets] = useState<widget.Widget[]>([]);
 
-  // useEffect(() => {
-  //   // Fetch room data when component mounts
-  //   fetchRoomData(roomId)
-  //     .then(data => setRoomData(data))
-  //     .catch(error => console.error("Error fetching room data:", error));
-  // }, [roomId]);
 
-  // Render room data
+  useEffect(() => {
+
+    const fetchWidgts = async () => {
+      try {
+        const widgetsData = await widget.getWidgets(roomId);
+        setWidgets(widgetsData);
+        console.log(widgetsData);
+      } catch (error) {
+        console.error('Error fetching widgets:', error);
+      }
+    };
+
+    fetchWidgts();
+  }, [roomId]);
+
   return (
     <div>
-      {/* Render room data here */}
+      
     </div>
   );
 };
