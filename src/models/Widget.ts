@@ -13,8 +13,23 @@ export interface Widget {
 }
 
 
-export async function getWidgets(roomId: string) {
-    return await dbAPI.getWidgets(roomId);
+export async function getWidgets(roomId: string): Promise<Widget[]> {
+    // get widgets as a json array
+    const widgetsData = await dbAPI.getWidgets(roomId);
+
+    // map returned json array to widgets
+    const widgets: Widget[] = widgetsData.map((widgetData: any) => ({
+        _id: widgetData._id,
+        device_id: widgetData.device_id,
+        room_id: widgetData.room_id,
+        title: widgetData.title,
+        row: widgetData.row,
+        col: widgetData.col,
+        row_span: widgetData.row_span,
+        col_span: widgetData.col_span,
+    }));
+
+    return widgets;
 }
 
 export async function updateWidgetLocation(widgetId: string, row: number, col: number) {
