@@ -26,7 +26,9 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 return (
                     <div>
                         <button
-                            className={`rounded ${deviceState === '0' ? 'bg-rose-900' : 'bg-lime-900'}`}
+                            className={`rounded w-full p-1 text-off-white
+                            ${deviceState === '0' ? 'bg-rose-800' : 'bg-lime-800'}`
+                            }
                             onClick={() => handleDeviceStateChange(deviceState === '0' ? '1' : '0')}
                         >
                             {deviceState === '0' ? 'OFF' : 'ON'}
@@ -53,7 +55,12 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
     };
 
     return (
-        <div className="bg-blue-200 p-4 cursor-pointer w-48 h-48 flex flex-col">
+        <div
+            className="rounded border-2 
+                border-dark-blue
+                bg-off-white 
+                p-4 m-2 w-48 h-48 
+                flex flex-col">
             <h1>{widget.title}</h1>
             {renderValueControl()}
         </div>

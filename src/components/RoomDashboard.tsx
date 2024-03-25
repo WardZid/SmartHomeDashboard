@@ -27,7 +27,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
   }, [roomId]);
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row bg-slate-600 h-full">
       {widgets.map((widget) => (
         <WidgetItem key={widget._id} widget={widget} />
       ))}
