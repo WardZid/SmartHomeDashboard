@@ -60,11 +60,17 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
             className="rounded 
                 bg-slate-700
                 text-off-white
-                p-4 m-2 w-48 h-48 
-                flex flex-col justify-between">
-            <h1
-                className="text-xl font-semibold">
-                {widget.title}</h1>
+                p-4 m-2 w-full h-full
+                flex flex-col justify-between"
+            style={{
+                userSelect: 'none'
+            }}>
+            <div className="flex flex-row">
+                <div className=" react-grid-drag-handle
+                text-xl mx-1 px-1 rounded-full cursor-grab active:cursor-grabbing hover:bg-slate-600">✣</div>
+                <h1 className="text-xl font-semibold">{widget.title}</h1>
+            </div>
+
             {renderValueControl()}
         </div>
     );

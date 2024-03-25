@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as widgetModel from "../models/Widget";
 import WidgetItem from "./WidgetItem";
+import RGL, { WidthProvider } from "react-grid-layout";
+import "/node_modules/react-grid-layout/css/styles.css"
+import "/node_modules/react-resizable/css/styles.css"
 
+const ReactGridLayout = WidthProvider(RGL);
 
 interface RoomDashboardProps {
   roomId: string;
@@ -26,13 +30,36 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
     fetchWidgts();
   }, [roomId]);
 
+
+  const gridProps = {
+    className: "layout",
+    cols: 6,
+    rowHeight: 200,
+    verticalCompact: false,
+    autoSize: true,
+    draggableHandle: ".react-grid-drag-handle",
+  };
+
   return (
-    <div className="flex flex-row bg-slate-600 h-full">
-      {widgets.map((widget) => (
-        <WidgetItem key={widget._id} widget={widget} />
-      ))}
+    <div className="bg-slate-600 h-full draggable">
+      <ReactGridLayout
+        {...gridProps}>
+        {widgets.map((widget) => (
+          <div
+            key={widget._id}
+            data-grid={{
+              x: widget.col,
+              y: widget.row,
+              w: widget.col_span,
+              h: widget.row_span,
+            }}>
+            <WidgetItem widget={widget} />
+          </div>
+        ))}
+      </ReactGridLayout>
     </div>
   );
 };
+
 
 export default RoomDashboard;
