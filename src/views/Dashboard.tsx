@@ -99,7 +99,7 @@ const Dashboard = () => {
             </button>
           </div>
 
-          <h6 className="mt-6 px-2 text-base text-off-white">Rooms</h6>
+          <h6 className="mt-6 px-2 text-base text-off-white opacity-70">Rooms</h6>
 
           {rooms.map(room => (
             <RoomItem 

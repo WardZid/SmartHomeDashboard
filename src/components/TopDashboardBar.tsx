@@ -31,23 +31,23 @@ const TopDashboardBar: React.FC = () => {
     const handleEyeClick = () => {
         navigate("/");
     };
-    
+
     return (
         <>
-            <nav className="flex justify-between items-center bg-off-white px-4 py-2 border-b-2 ">
+            <nav className="flex justify-between items-center bg-dark-blue px-4 py-2 text-off-white">
                 <div className="flex justify-center items-center">
                     <div onClick={handleEyeClick}>
-                        <WatchingCircle outerCircleColor="#042A35" innerCircleColor="#EEEEEE" />
+                        <WatchingCircle outerCircleColor="#EEEEEE" innerCircleColor="#042A35" />
                     </div>
                     <h1 className="px-2">Hello, {fullName}!</h1>
                 </div>
 
                 <div className="flex justify-center items-center">
-                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
+                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-700"
                         onClick={handleSettings}>
                         Settings
                     </button>
-                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-300"
+                    <button className="mx-1 px-2 py-1 rounded hover:bg-slate-700"
                         onClick={handleLogout}>
                         Log Out
                     </button>

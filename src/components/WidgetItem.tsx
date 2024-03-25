@@ -26,7 +26,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 return (
                     <div>
                         <button
-                            className={`rounded w-full p-1 text-off-white
+                            className={`rounded w-full p-1 text-off-white 
                             ${deviceState === '0' ? 'bg-rose-800' : 'bg-lime-800'}`
                             }
                             onClick={() => handleDeviceStateChange(deviceState === '0' ? '1' : '0')}
@@ -37,9 +37,10 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 );
             case "int":
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col items-center">
                         <h6>{deviceState}</h6>
                         <input
+                            className="w-full "
                             type="range"
                             min={widget.device.measurement.min}
                             max={widget.device.measurement.max}
@@ -56,12 +57,14 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
 
     return (
         <div
-            className="rounded border-2 
-                border-dark-blue
-                bg-off-white 
+            className="rounded 
+                bg-slate-700
+                text-off-white
                 p-4 m-2 w-48 h-48 
-                flex flex-col">
-            <h1>{widget.title}</h1>
+                flex flex-col justify-between">
+            <h1
+                className="text-xl font-semibold">
+                {widget.title}</h1>
             {renderValueControl()}
         </div>
     );
