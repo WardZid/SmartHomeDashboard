@@ -31,6 +31,7 @@ const TopDashboardBar: React.FC = () => {
     const handleEyeClick = () => {
         navigate("/");
     };
+    
     return (
         <>
             <nav className="flex justify-between items-center bg-off-white px-4 py-2 border-b-2 ">

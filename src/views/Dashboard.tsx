@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as user from '../models/User';
 import * as room from '../models/Room';
-import { Room } from '../models/Room';
 
 import TopDashboardBar from '../components/TopDashboardBar';
 import RoomDashboard from '../components/RoomDashboard';
@@ -12,8 +11,8 @@ import WatchingCircle from '../components/WatchingCircle';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [rooms, setRooms] = useState<room.Room[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<room.Room | null>(null);
   const [newRoomName, setNewRoomName] = useState<string>('');
 
   useEffect(() => {
@@ -67,7 +66,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleRoomSelect = (room: Room) => {
+  const handleRoomSelect = (room: room.Room) => {
     setSelectedRoom(room);
   };
 
