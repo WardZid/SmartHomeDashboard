@@ -40,10 +40,9 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
   }, [roomId]);
 
   const onLayoutChange = (layout: Layout[]) => {
-    // Save the new layout to the database
     layout.forEach(async (item) => {
       try {
-        // Update the position and size of each widget in the database
+        // TODO crate an update all instead of update one to minimize # of api calls
         await widgetModel.updateWidgetLocationAndSize(
           item.i,
           item.y,
@@ -56,7 +55,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
       }
     });
 
-    // Update the state with the new layout
+    //save layout state
     setLayout(layout);
   };
 
