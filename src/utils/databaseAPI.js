@@ -234,10 +234,18 @@ export async function getWidgets(roomId) {
   return await aggregate("widgets", requestData);
 }
 
-export async function updateWidgetLocation(widgetId, row, col) {
+export async function updateWidgetLocationAndSize(
+  widgetId,
+  row,
+  col,
+  rowSpan,
+  colSpan
+) {
   const updateData = {
     row: row,
     col: col,
+    row_span: rowSpan,
+    col_span: colSpan,
   };
   return await updateOne("widgets", updateData, widgetId);
 }

@@ -61,7 +61,8 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 bg-slate-700
                 text-off-white
                 p-4 m-2 w-full h-full
-                flex flex-col justify-between"
+                flex flex-col justify-between
+                overflow-hidden"
             style={{
                 userSelect: 'none'
             }}>

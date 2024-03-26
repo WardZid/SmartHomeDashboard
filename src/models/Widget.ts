@@ -35,6 +35,6 @@ export async function getWidgets(roomId: string): Promise<Widget[]> {
     return widgets;
 }
 
-export async function updateWidgetLocation(widgetId: string, row: number, col: number) {
-    return await dbAPI.updateWidgetLocation(widgetId, row, col);
+export async function updateWidgetLocationAndSize(widgetId: string, row: number, col: number, rowSpan: number, colSpan: number) {
+    return await dbAPI.updateWidgetLocationAndSize(widgetId, row, col,rowSpan,colSpan);
 }
