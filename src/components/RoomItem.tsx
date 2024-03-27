@@ -38,7 +38,7 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
 
     return (
         <div
-            className={`py-1 px-2 mx-2 cursor-pointer rounded-lg flex flex-row justify-between ${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'}`}
+            className={`py-1 px-2 cursor-pointer rounded-lg flex flex-row justify-between ${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'}`}
             onClick={handleRoomClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
