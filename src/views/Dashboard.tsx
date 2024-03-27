@@ -30,7 +30,10 @@ const Dashboard = () => {
       try {
         const roomsData = await room.getRooms();
         setRooms(roomsData);
-        console.log(roomsData);
+        if (roomsData.length > 0) {
+          setSelectedRoom(roomsData[0]);
+        }
+
       } catch (error) {
         console.error('Error fetching rooms:', error);
       }
@@ -73,9 +76,9 @@ const Dashboard = () => {
   const handleChangeNewRoomName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewRoomName(event.target.value);
   };
-  
+
   return (
-    <div className="h-screen bg-slate-400 flex flex-col">
+    <div className="h-screen bg-slate-600 flex flex-col">
       <TopDashboardBar />
 
       <div className="flex flex-grow flex-row">
@@ -102,11 +105,11 @@ const Dashboard = () => {
           <h6 className="mt-6 px-2 text-base text-off-white opacity-70">Rooms</h6>
 
           {rooms.map(room => (
-            <RoomItem 
-              key={room._id} 
-              room={room} 
-              onSelect={handleRoomSelect} 
-              onDelete={handleDeleteRoom} 
+            <RoomItem
+              key={room._id}
+              room={room}
+              onSelect={handleRoomSelect}
+              onDelete={handleDeleteRoom}
               isSelected={selectedRoom !== null && selectedRoom._id === room._id}
             />
           ))}
