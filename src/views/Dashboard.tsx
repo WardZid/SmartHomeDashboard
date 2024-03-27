@@ -81,7 +81,7 @@ const Dashboard = () => {
     <div className="h-screen bg-slate-600 flex flex-col">
       <TopDashboardBar />
 
-      <div className="flex flex-grow flex-row">
+      <div className="flex h-full flex-row overflow-hidden">
 
         <div className="bg-dark-blue pt-4 w-52">
 
@@ -115,7 +115,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className='flex-grow'>
+        <div className="flex-grow overflow-y-auto">
           {/* Render RoomDashboard component if a room is selected */}
           {selectedRoom && <RoomDashboard roomId={selectedRoom._id} />}
         </div>

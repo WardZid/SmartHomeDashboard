@@ -62,7 +62,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
   const gridProps = {
     className: "layout",
     cols: 6,
-    rowHeight: 150,
+    rowHeight: 200,
     compactType: null,
     autoSize: true,
     draggableHandle: ".react-grid-drag-handle",
