@@ -4,6 +4,7 @@ import * as lsAPI from "../utils/localStorage";
 export interface Device {
     _id: string;
     type: string;
+    title: string;
     measurement: Measurement;
 }
 

@@ -5,6 +5,7 @@ export interface User {
   _id: string;
   first_name: string;
   last_name: string;
+  home_id: string;
 }
 
 export async function getUserInfo(): Promise<User | null> {

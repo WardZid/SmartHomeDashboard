@@ -159,25 +159,26 @@ const Dashboard = () => {
               Log Out
             </button>
           </div>
-        </div> 
-        
-         <div className="flex-grow overflow-y-hidden flex flex-col">
+        </div>
+
+        <div className="flex-grow overflow-y-hidden flex flex-col">
           <div
             className="
-            flex flex-row-reverse
+            flex flex-row
             px-4 py-2">
+            <h1 className="flex-grow text-2xl font-bold">Smart Home Automation Dashboard</h1>
+
             <button
               className="bg-off-white 
               text-dark-blue font-bold 
               rounded-lg py-1 px-2">
-              New Widget
+              Add Widget
             </button>
           </div>
 
           <div className="overflow-y-scroll flex-grow"
             style={{
               scrollbarWidth: 'thin',
-              scrollbarGutter: 'hidden',
               scrollbarColor: '#888 transparent'
             }}>
             {/* Render RoomDashboard component if a room is selected */}
