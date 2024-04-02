@@ -63,20 +63,26 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 rounded 
                 bg-off-white dark:bg-slate-700
                 text-dark-blue dark:text-off-white
-                p-4 m-2 w-full h-full
+                w-full h-full
                 flex flex-col justify-between
-                overflow-hidden`}
+                overflow-hidden
+                border-dark-blue`}
             style={{
                 userSelect: 'none'
-            }}>
-            {/*TODO dark mode hover fix*/}
-            <div className="flex flex-row">
-                <div className=" react-grid-drag-handle
-                text-xl mx-1 px-1 rounded-full cursor-grab active:cursor-grabbing hover:bg-slate-600">✣</div>
-                <h1 className="text-xl font-semibold">{widget.title}</h1>
+            }}
+        >
+            <div className="h-4 bg-dark-blue
+             react-grid-drag-handle cursor-grab active:cursor-grabbing">
+                {/*Top bar for moving*/}
             </div>
+            <div className=" p-2 flex flex-col justify-between overflow-hidden flex-grow">
 
-            {renderValueControl()}
+                <div className="flex flex-row">
+                    <h1 className="text-xl font-semibold">{widget.title}</h1>
+                </div>
+
+                {renderValueControl()}
+            </div>
         </div>
 
     );
