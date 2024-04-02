@@ -8,9 +8,11 @@ import { useDarkMode } from "../contexts/DarkModeContext";
 const Logo: React.FC = () => {
     const navigate = useNavigate();
     const { darkMode } = useDarkMode();
+
     const handleLogoClick = () => {
         navigate("/");
     };
+    
     return (
             <div className="flex items-center px-2 rounded-xl cursor-pointer bg-off-white dark:bg-dark-blue"
                 onClick={handleLogoClick}>
