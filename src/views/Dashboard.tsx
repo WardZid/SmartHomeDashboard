@@ -7,6 +7,7 @@ import RoomDashboard from '../components/RoomDashboard';
 import RoomItem from '../components/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
+import SettingsDialog from '../components/SettingsDialog';
 
 
 const Dashboard: React.FC = () => {
@@ -16,6 +17,8 @@ const Dashboard: React.FC = () => {
   const [selectedRoom, setSelectedRoom] = useState<room.Room | null>(null);
   const [newRoomName, setNewRoomName] = useState<string>('');
   const [fullName, setFullName] = useState<string>("");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
 
 
   useEffect(() => {
@@ -98,7 +101,12 @@ const Dashboard: React.FC = () => {
     user.signOut();
     navigate("/login");
   };
-  const handleSettings = () => {
+  const handleOpenSettings = () => {
+    setIsSettingsOpen(true); // Open the settings dialog
+  };
+
+  const handleCloseSettings = () => {
+    setIsSettingsOpen(false); // Close the settings dialog
   };
 
 
@@ -115,14 +123,14 @@ const Dashboard: React.FC = () => {
           <div className="bg-dark-blue pt-4 w-52 flex flex-col px-2">
 
             <div className="flex justify-center items-center pb-4">
-                {/*TODO dark mode fix*/}
+              {/*TODO dark mode fix*/}
               <div onClick={handleEyeClick}>
                 <WatchingCircle outerCircleColor="#EEEEEE" innerCircleColor="#042A35" />
               </div>
               <h1 className="px-2">Hello, {fullName}!</h1>
             </div>
 
-{/*TODO dark mode fix*/}
+            {/*TODO dark mode fix*/}
             <div className="py-1 px-2 hover:bg-slate-700 cursor-pointer rounded-xl flex flex-col">
               <input
                 type="text"
@@ -158,7 +166,7 @@ const Dashboard: React.FC = () => {
 
             <div className="flex justify-center items-center py-2">
               <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
-                onClick={handleSettings}>
+                onClick={handleOpenSettings}>
                 Settings
               </button>
               <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
@@ -173,12 +181,14 @@ const Dashboard: React.FC = () => {
               className="
             flex flex-row
             px-4 py-2">
-              <h1 className="flex-grow text-2xl font-bold">Smart Home Automation Dashboard</h1>
+              <h1 className="flex-grow text-2xl font-bold inline">Smart Home Automation Dashboard</h1>
 
               <button
-                className="bg-off-white 
-              text-dark-blue font-bold 
-              rounded-lg py-1 px-2">
+                className="
+                  bg-light-blue
+                  text-dark-blue
+                    font-bold 
+                    rounded-lg py-1 px-2">
                 Add Widget
               </button>
             </div>
@@ -196,7 +206,9 @@ const Dashboard: React.FC = () => {
         </div>
 
       </div>
-
+      {isSettingsOpen &&
+        <SettingsDialog onClose={handleCloseSettings} />
+      } {/* Render the SettingsDialog component */}
     </div>
 
   );

@@ -60,7 +60,6 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
     return (
         <div
             className={`
-                ${darkMode ? 'dark' : ''}
                 rounded 
                 bg-off-white dark:bg-slate-700
                 text-dark-blue dark:text-off-white

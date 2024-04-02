@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Room } from "../models/Room";
-import { useDarkMode } from "../contexts/DarkModeContext";
 
 interface RoomItemProps {
     room: Room;
@@ -10,7 +9,6 @@ interface RoomItemProps {
 }
 
 const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelected }) => {
-    const { darkMode } = useDarkMode();
     const [isHovered, setIsHovered] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -39,7 +37,6 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
     };
 
     return (
-        <div className={darkMode ? 'dark' : ''}>
             <div
                 className={`py-1 px-2 cursor-pointer rounded-lg flex flex-row justify-between ${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'} dark:${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'}`}
                 onClick={handleRoomClick}
@@ -57,7 +54,6 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
                     />
                 )}
             </div>
-        </div>
 
     );
 };
