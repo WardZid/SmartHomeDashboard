@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../components/Logo';
 import WatchingCircle from '../components/WatchingCircle';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 const HomePage: React.FC = () => {
+  const { darkMode } = useDarkMode();
 
   const numRows = 12;
   const numCells = 24;
@@ -13,7 +15,7 @@ const HomePage: React.FC = () => {
     for (let i = 0; i < numRows; i++) {
       const cells = [];
       for (let j = 0; j < numCells; j++) {
-        cells.push(<td key={j} className='p-2'><WatchingCircle innerCircleColor="#F05622" outerCircleColor='#EEEEEE'/></td>);
+        cells.push(<td key={j} className='p-2'><WatchingCircle innerCircleColor="#F05622" outerCircleColor='#EEEEEE' /></td>);
       }
       rows.push(<tr key={i}>{cells}</tr>);
     }
@@ -21,20 +23,22 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <>
+    <div className={darkMode ? 'dark' : ''}>
       <div className='h-screen overflow-hidden'>
-
 
         <nav className="flex justify-between items-center bg-transparent py-4 px-10 absolute w-full">
           <Logo />
           <div>
-            <Link to="/login" className="font-bold text-dark-blue bg-off-white px-4 py-2 rounded-full">Get Started!</Link>
+            <Link to="/login"
+              className="font-bold px-4 py-2 rounded-full bg-off-white dark:bg-dark-blue text-dark-blue dark:text-off-white">
+              Get Started!
+            </Link>
             {/* <Link to="/signup" className="bg-light-blue text-white px-4 py-2 rounded-md mr-4">Sign Up</Link> */}
           </div>
         </nav>
 
-        <div className="h-screen overflow-y-scroll" >
 
+        <div className="h-screen overflow-y-scroll" >
 
           <section className="h-screen flex flex-col justify-center items-center bg-orange text-white snap-align-start">
             <h1 className="text-4xl font-bold mb-4">Welcome to Smart Home Automation</h1>
@@ -55,16 +59,16 @@ const HomePage: React.FC = () => {
             <p className="text-lg text-center">Transform your home into a smart home today with our easy-to-use dashboard.</p>
           </section>
           <section className="h-screen flex flex-col justify-center items-center bg-orange text-dark-blue snap-align-start">
-          <table>
-                <tbody>
-                    {renderTable()}
-                </tbody>
+            <table>
+              <tbody>
+                {renderTable()}
+              </tbody>
             </table>
           </section>
         </div>
 
       </div>
-    </>
+    </div>
   );
 };
 

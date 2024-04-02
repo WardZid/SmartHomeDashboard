@@ -4,17 +4,21 @@ import LoginPage from './views/LoginPage';
 import HomePage from './views/HomePage';
 import SignUpPage from './views/SignupPage';
 import Dashboard from './views/Dashboard';
+import { DarkModeProvider } from './contexts/DarkModeContext';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </BrowserRouter>
+
+    <DarkModeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
+    </DarkModeProvider>
   );
 };
 
