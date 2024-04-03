@@ -101,12 +101,8 @@ const Dashboard: React.FC = () => {
     user.signOut();
     navigate("/login");
   };
-  const handleOpenSettings = () => {
-    setIsSettingsOpen(true); // Open the settings dialog
-  };
-
-  const handleCloseSettings = () => {
-    setIsSettingsOpen(false); // Close the settings dialog
+  const toggleSettingsDialog = () => {
+    setIsSettingsOpen(!isSettingsOpen);
   };
 
 
@@ -166,7 +162,7 @@ const Dashboard: React.FC = () => {
 
             <div className="flex justify-center items-center py-2">
               <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
-                onClick={handleOpenSettings}>
+                onClick={toggleSettingsDialog}>
                 Settings
               </button>
               <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
@@ -206,9 +202,7 @@ const Dashboard: React.FC = () => {
         </div>
 
       </div>
-      {isSettingsOpen &&
-        <SettingsDialog onClose={handleCloseSettings} />
-      } {/* Render the SettingsDialog component */}
+      <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
     </div>
 
   );

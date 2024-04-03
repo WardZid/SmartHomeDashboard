@@ -1,17 +1,27 @@
 import React from 'react';
-import { useDarkMode } from '../contexts/DarkModeContext';
-
+import Dialog from './Dialog';
 
 interface SettingsDialogProps {
+    isOpen: boolean;
     onClose: () => void;
 }
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
+const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
     return (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
+        <Dialog dialogTitle='Settings' isOpen={isOpen} onClose={onClose}>
             
-        </div>
-
+            <div className="flex flex-col space-y-2">
+                <div className="flex items-center">
+                    <input type="checkbox" id="darkMode" name="darkMode" className="mr-2" />
+                    <label htmlFor="darkMode">Dark Mode</label>
+                </div>
+                <div className="flex items-center">
+                    <input type="checkbox" id="notifications" name="notifications" className="mr-2" />
+                    <label htmlFor="notifications">Notifications</label>
+                </div>
+                {/* Add more settings options as needed */}
+            </div>
+        </Dialog>
     );
 };
 
