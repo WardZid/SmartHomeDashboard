@@ -38,7 +38,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
     return (
         <Dialog dialogTitle='Add Widget' isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
             <div className=" flex flex-row">
-                <div className="flex flex-col w-64
+                <div className="flex flex-col w-64 px-1
                 border-r border-light-blue">
                     <h6 className=" text-base opacity-70">Devices</h6>
                     {devices.map(device => (

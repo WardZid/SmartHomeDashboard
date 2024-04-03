@@ -7,7 +7,7 @@ import RoomDashboard from '../components/room/RoomDashboard';
 import RoomItem from '../components/room/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
-import SettingsDialog from '../components/SettingsDialog';
+import SettingsDialog from '../components/settings/SettingsDialog';
 import AddWidgetDialog from '../components/add_widget/AddWidgetDialog';
 
 
