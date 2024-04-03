@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { SettingsCategory } from "./SettingsDialog";
+
+export interface SettingsCategory {
+    title: string;
+}
 
 interface SettingsCategoryItemProps {
     settingsCategory: SettingsCategory;

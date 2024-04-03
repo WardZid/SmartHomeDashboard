@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as lsApi from '../utils/localStorage';
 
-enum Theme {
-    system = 'system',
-    light = 'light',
-    dark = 'dark'
+export enum Theme {
+    system = 'System',
+    light = 'Light',
+    dark = 'Dark'
 }
 type DarkModeContextType = {
     darkMode: boolean;
@@ -36,22 +36,23 @@ export const DarkModeProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
     });
 
     useEffect(() => {
-        const updateDarkMode = () => {
-            setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-        };
-        updateDarkMode(); // Initial call
-
-        const handleChange = () => updateDarkMode();
-
-        if (themePreference === Theme.system) {
-            //create a changelistener for the system's theme
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            mediaQuery.addEventListener('change', handleChange);
-            return () => mediaQuery.removeEventListener('change', handleChange);
-        }
-
         // update themePreference in localStorage
         lsApi.setItem('themePreference', themePreference);
+
+        const updateSystemDarkMode = () => {
+            setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+        };
+
+        if (themePreference === Theme.system) {
+            updateSystemDarkMode();
+            //create a changelistener for the system's theme
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', updateSystemDarkMode);
+            return () => mediaQuery.removeEventListener('change', updateSystemDarkMode);
+        } else {
+            setDarkMode(themePreference === Theme.dark);
+        }
+
 
     }, [themePreference]);
 
