@@ -69,7 +69,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId }) => {
   };
 
   return (
-    <div className="bg-slate-600">
+    <div className="">
       <ReactGridLayout
         {...gridProps}
         layout={layout}

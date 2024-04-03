@@ -115,7 +115,7 @@ const Dashboard: React.FC = () => {
       <div
         className="
           h-screen flex flex-col 
-        bg-off-white dark:bg-slate-600
+        bg-off-white dark:bg-slate-700
         text-dark-blue dark:text-off-white "
       >
         <div className="flex h-full flex-row overflow-hidden">
