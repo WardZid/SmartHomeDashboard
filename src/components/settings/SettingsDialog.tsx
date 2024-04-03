@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '../Dialog';
 import SettingsCategoryItem, { SettingsCategory } from './SettingsCategoryItem';
 import SettingsItem, { SettingsItemProps } from './SettingsItem';
@@ -19,22 +19,24 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
         return categories;
     });
     const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<SettingsCategory>(settingsCategories[0]);
-    const [settings, setSettings] = useState<SettingsItemProps[]>(() => {
-        const settings = [
+    const [settings, setSettings] = useState<SettingsItemProps[]>([]);
+
+    
+    useEffect(() => {
+        const updatedSettings = [
             {
-                settingsCategory:
-                    { title: "Appearance" },
+                settingsCategory: { title: "Appearance" },
                 title: "Theme",
                 type: "array",
                 values: Object.values(Theme).map(theme => ({ value: theme, label: theme })),
-                selectedValue: themePreference,
+                selectedValue: themePreference, // Reflects the current value of themePreference
                 onSelect: (theme: Theme) => {
-                    setThemePreference(theme);
+                    setThemePreference(theme); // Update theme preference
                 }
             }
         ];
-        return settings;
-    });
+        setSettings(updatedSettings);
+    }, [themePreference]);
 
 
     const handleClose = () => {
