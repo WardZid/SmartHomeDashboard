@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface DialogProps {
     dialogTitle: string;
@@ -8,6 +8,21 @@ interface DialogProps {
 }
 
 const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, onClose, children }) => {
+    //even listener for closing the dialog on pressing esc
+    useEffect(() => {
+        const handleEscKeyPress = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+        if (isOpen) {
+            window.addEventListener('keydown', handleEscKeyPress);
+        }
+        return () => {
+            window.removeEventListener('keydown', handleEscKeyPress);
+        };
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
     return (

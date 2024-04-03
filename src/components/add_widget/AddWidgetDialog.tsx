@@ -13,18 +13,13 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
     const [selectedDevice, setSelectedDevice] = useState<deviceModel.Device | null>(null);
 
     useEffect(() => {
-
-
         const fetchDevices = async () => {
             try {
                 const devicesData = await deviceModel.getDevices();
                 setDevices(devicesData);
-                // if (roomsData.length > 0) {
-                //     setSelectedDevice(roomsData[0]);
-                // }
 
             } catch (error) {
-                console.error('Error fetching rooms:', error);
+                console.error('Error fetching Devices:', error);
             }
         };
 
