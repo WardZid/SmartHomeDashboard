@@ -265,3 +265,12 @@ export async function getDevice(deviceId) {
   };
   return await findOne("devices", requestData);
 }
+
+export async function getDevices(homeId) {
+  const requestData = {
+    filter: {
+      home_id: { $oid: homeId },
+    },
+  };
+  return await findMany("devices", requestData);
+}

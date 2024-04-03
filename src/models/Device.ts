@@ -1,10 +1,12 @@
 import * as dbAPI from "../utils/databaseAPI";
 import * as lsAPI from "../utils/localStorage";
+import * as userModel from "./User"
 
 export interface Device {
     _id: string;
     type: string;
     title: string;
+    home_id: string;
     measurement: Measurement;
 }
 
@@ -26,4 +28,30 @@ export async function getDevice(deviceId: string): Promise<Device> {
     const device: Device = deviceData
 
     return device;
+}
+
+
+export async function getDevices(): Promise<Device[]> {
+    try {
+        const userInfo = await userModel.getUserInfo();
+        if (userInfo === null) {
+            return [];
+        }
+        const devicesData = await dbAPI.getDevices(userInfo.home_id);
+
+        // Transform the response into an array of Device objects
+        const devices: Device[] = devicesData.map((device: any) => ({
+            _id: device._id,
+            type: device.type,
+            title: device.title,
+            home_id: device.home_id,
+            measurement: device.measurement
+        }));
+
+        return devices;
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching rooms:', error);
+        throw new Error('Failed to fetch rooms');
+    }
 }
