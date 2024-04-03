@@ -8,7 +8,7 @@ interface SettingsDialogProps {
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
     return (
-        <Dialog dialogTitle='Settings' isOpen={isOpen} onClose={onClose}>
+        <Dialog dialogTitle='Settings' isOpen={isOpen} allowCloseX={true} onClose={onClose}>
             
             <div className="flex flex-col space-y-2">
                 <div className="flex items-center">

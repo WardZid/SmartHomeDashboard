@@ -36,7 +36,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
     };
 
     return (
-        <Dialog dialogTitle='Add Widget' isOpen={isOpen} onClose={handleClose}>
+        <Dialog dialogTitle='Add Widget' isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
             <div className=" flex flex-row">
                 <div className="flex flex-col w-64
                 border-r border-light-blue">

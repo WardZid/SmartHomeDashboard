@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 interface DialogProps {
     dialogTitle: string;
     isOpen: boolean;
+    allowCloseX: boolean;
     onClose: () => void;
     children: React.ReactNode;
 }
 
-const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, onClose, children }) => {
+const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, allowCloseX, onClose, children }) => {
     //even listener for closing the dialog on pressing esc
     useEffect(() => {
         const handleEscKeyPress = (event: KeyboardEvent) => {
@@ -37,22 +38,25 @@ const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, onClose, children 
                  text-dark-blue dark:text-off-white">
                     <div className="flex flex-row justify-between p-4 border-b border-light-blue">
                         <h1 className="text-lg font-bold">{dialogTitle}</h1>
-                        <button
-                            className=""
-                            onClick={onClose}
-                        >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                        {allowCloseX &&
+                            <button
+                                className=""
+                                onClick={onClose}
                             >
-                                <path d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        }
+
                     </div>
                     <div className="p-4">
                         {children}
