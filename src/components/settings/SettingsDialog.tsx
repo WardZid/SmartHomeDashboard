@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Dialog from '../Dialog';
+import Dialog from '../generic/Dialog';
 import SettingsCategoryItem, { SettingsCategory } from './SettingsCategoryItem';
 import SettingsItem, { SettingsItemProps } from './SettingsItem';
 import { Theme, useDarkMode } from '../../contexts/DarkModeContext';

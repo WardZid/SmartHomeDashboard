@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Dialog from '../Dialog';
+import Dialog from '../generic/Dialog';
 import * as deviceModel from "../../models/Device";
 import AddWidgetDeviceItem from "./AddWidgetDeviceItem";
 

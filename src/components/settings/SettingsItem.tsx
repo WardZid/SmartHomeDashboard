@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SettingsCategory } from "./SettingsCategoryItem";
-import ComboBox from "../ComboBox";
+import ComboBox from "../generic/ComboBox";
 
 export interface SettingsItemProps {
     settingsCategory: SettingsCategory;
