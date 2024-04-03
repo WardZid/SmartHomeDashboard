@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Dialog from '../Dialog';
 import * as deviceModel from "../../models/Device";
-import AddWidgetDeviceItem from "./AddWidgetItem";
+import AddWidgetDeviceItem from "./AddWidgetDeviceItem";
 
 interface AddWidgetDialogProps {
     isOpen: boolean;
