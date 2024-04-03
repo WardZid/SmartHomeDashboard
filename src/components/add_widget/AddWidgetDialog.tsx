@@ -38,7 +38,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
     return (
         <Dialog dialogTitle='Add Widget' isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
             <div className=" flex flex-row">
-                <div className="flex flex-col w-64 h-96 px-1
+                <div className="flex flex-col w-64 h-96 px-4
                 border-r border-light-blue">
                     <h6 className=" text-base opacity-70">Devices</h6>
                     {devices.map(device => (
@@ -49,6 +49,9 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
                             isSelected={selectedDevice !== null && selectedDevice._id === device._id}
                         />
                     ))}
+                </div>
+                <div className="w-96 px-1">
+                    {/*Widget Options here*/}
                 </div>
             </div>
         </Dialog>

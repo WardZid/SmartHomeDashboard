@@ -21,7 +21,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
     const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<SettingsCategory>(settingsCategories[0]);
     const [settings, setSettings] = useState<SettingsItemProps[]>([]);
 
-    
+
     useEffect(() => {
         const updatedSettings = [
             {
@@ -48,6 +48,10 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
         setSelectedSettingsCategory(category);
     };
 
+    const filteredSettings = selectedSettingsCategory.title === "General"
+        ? settings
+        : settings.filter(setting => setting.settingsCategory.title === selectedSettingsCategory.title);
+
     return (
         <Dialog dialogTitle='Settings' isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
             <div className=" flex flex-row">
@@ -63,7 +67,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                     ))}
                 </div>
                 <div className="w-96 px-1">
-                    {settings.map(setting => (
+                    {filteredSettings.map(setting => (
                         <SettingsItem
                             key={setting.title}
                             settingsCategory={setting.settingsCategory}

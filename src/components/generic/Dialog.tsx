@@ -28,12 +28,12 @@ const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, allowCloseX, onClo
 
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-screen">
+            <div className="flex items-center justify-center min-h-screen ">
                 <div className="fixed inset-0 transition-opacity" onClick={onClose}>
                     <div className="absolute inset-0 bg-black opacity-50"></div>
                 </div>
 
-                <div className="relative rounded-lg min-w-80
+                <div className="relative rounded-lg min-w-96 
                  bg-off-white dark:bg-dark-blue
                  text-dark-blue dark:text-off-white">
                     <div className="flex flex-row justify-between p-6 border-b border-light-blue">
