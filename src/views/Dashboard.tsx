@@ -8,16 +8,18 @@ import RoomItem from '../components/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/SettingsDialog';
+import AddWidgetDialog from '../components/AddWidgetDialog';
 
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
+  const [fullName, setFullName] = useState<string>("");
   const [rooms, setRooms] = useState<room.Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<room.Room | null>(null);
   const [newRoomName, setNewRoomName] = useState<string>('');
-  const [fullName, setFullName] = useState<string>("");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
 
 
 
@@ -104,6 +106,9 @@ const Dashboard: React.FC = () => {
   const toggleSettingsDialog = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
+  const toggleAddWidgetDialog = () => {
+    setIsAddWidgetDialogOpen(!isAddWidgetDialogOpen);
+  };
 
 
   return (
@@ -184,7 +189,8 @@ const Dashboard: React.FC = () => {
                   bg-light-blue
                   text-dark-blue
                     font-bold 
-                    rounded-lg py-1 px-2">
+                    rounded-lg py-1 px-2"
+                onClick={toggleAddWidgetDialog}>
                 Add Widget
               </button>
             </div>
@@ -203,6 +209,7 @@ const Dashboard: React.FC = () => {
 
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
+      <AddWidgetDialog isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
     </div>
 
   );

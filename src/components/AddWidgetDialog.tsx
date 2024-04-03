@@ -1,10 +1,19 @@
 import React from "react";
+import Dialog from './Dialog';
 
-const AddWidgetDialog: React.FC = () => {
+interface AddWidgetDialogProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) => {
     return (
-        <div>
+        <Dialog dialogTitle='Add Widget' isOpen={isOpen} onClose={onClose}>
 
-        </div>
+            <div className="flex flex-col space-y-2">
+               
+            </div>
+        </Dialog>
     );
 };
 
