@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as user from '../models/User';
 import * as room from '../models/Room';
 
-import RoomDashboard from '../components/RoomDashboard';
-import RoomItem from '../components/RoomItem';
+import RoomDashboard from '../components/room/RoomDashboard';
+import RoomItem from '../components/room/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/SettingsDialog';

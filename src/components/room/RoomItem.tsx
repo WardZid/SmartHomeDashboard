@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Room } from "../models/Room";
+import { Room } from "../../models/Room";
 
 interface RoomItemProps {
     room: Room;
