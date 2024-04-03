@@ -8,7 +8,7 @@ import RoomItem from '../components/room/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/SettingsDialog';
-import AddWidgetDialog from '../components/AddWidgetDialog';
+import AddWidgetDialog from '../components/add_widget/AddWidgetDialog';
 
 
 const Dashboard: React.FC = () => {

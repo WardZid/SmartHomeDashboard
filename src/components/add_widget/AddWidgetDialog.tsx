@@ -1,5 +1,5 @@
 import React from "react";
-import Dialog from './Dialog';
+import Dialog from '../Dialog';
 
 interface AddWidgetDialogProps {
     isOpen: boolean;
@@ -7,11 +7,13 @@ interface AddWidgetDialogProps {
 }
 
 const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) => {
+
     return (
         <Dialog dialogTitle='Add Widget' isOpen={isOpen} onClose={onClose}>
-
-            <div className="flex flex-col space-y-2">
-               
+            <div className=" flex flex-row">
+                <div className="flex flex-col space-y-2">
+                    
+                </div>
             </div>
         </Dialog>
     );
