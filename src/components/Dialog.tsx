@@ -36,8 +36,8 @@ const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, allowCloseX, onClo
                 <div className="relative rounded-lg min-w-80
                  bg-off-white dark:bg-dark-blue
                  text-dark-blue dark:text-off-white">
-                    <div className="flex flex-row justify-between p-4 border-b border-light-blue">
-                        <h1 className="text-lg font-bold">{dialogTitle}</h1>
+                    <div className="flex flex-row justify-between p-6 border-b border-light-blue">
+                        <h1 className="text-2xl font-bold">{dialogTitle}</h1>
                         {allowCloseX &&
                             <button
                                 className=""
@@ -58,7 +58,7 @@ const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, allowCloseX, onClo
                         }
 
                     </div>
-                    <div className="p-4">
+                    <div className="py-4">
                         {children}
                     </div>
                 </div>

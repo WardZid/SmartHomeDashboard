@@ -22,7 +22,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({ options, selectedValue, onSelect })
     };
 
     return (
-        <div className="relative">
+        <div className="relative px-2">
             <select
                 value={selectedOption ? selectedOption.value : ''}
                 onChange={(e) => {
@@ -32,8 +32,10 @@ const ComboBox: React.FC<ComboBoxProps> = ({ options, selectedValue, onSelect })
                         handleSelect(selected);
                     }
                 }}
-                className=" w-full px-4 pr-8 rounded shadow leading-tight
-                 bg-off-white dark:bg-dark-blue focus:outline-none focus:border-gray-500"
+                className=" w-full px-4 py-2 pr-8 rounded
+                 bg-off-white dark:bg-dark-blue
+                 dark:hover:bg-slate-700
+                 focus:outline-none"
             >
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>

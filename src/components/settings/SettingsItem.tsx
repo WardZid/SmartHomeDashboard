@@ -51,15 +51,19 @@ const SettingsItem: React.FC<SettingsItemProps> = ({ settingsCategory, title, ty
         }
     };
 
-    
+
     return (
-        <div className="border-b ">
+        <div className="border-b border-light-blue pb-1">
             <div
-                className={`py-1 px-2 rounded-lg flex flex-row justify-between w-full `}
+                className={`py-4 px-4 rounded-lg flex flex-row items-center w-full `}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                <h2 className="flex-grow text-lg text-dark-blue dark:text-white ">{title}</h2>
+                <div className="flex-grow flex flex-col">
+                    <h2 className="text-xl text-dark-blue dark:text-off-white ">{title}</h2>
+                    <div className="text-sm opacity-70">{settingsCategory.title}</div>
+                </div>  
+
                 {renderSettingControl()}
             </div>
         </div>

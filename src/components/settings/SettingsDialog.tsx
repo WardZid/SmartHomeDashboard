@@ -51,8 +51,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
     return (
         <Dialog dialogTitle='Settings' isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
             <div className=" flex flex-row">
-                <div className="flex flex-col w-64 h-96 px-1 space-y-1
-                border-r border-light-blue">
+                <div className="flex flex-col w-64 h-96 px-4 space-y-1
+                ">
                     {settingsCategories.map(category => (
                         <SettingsCategoryItem
                             key={category.title}
