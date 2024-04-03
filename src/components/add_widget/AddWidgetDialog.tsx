@@ -45,6 +45,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
             <div className=" flex flex-row">
                 <div className="flex flex-col w-64
                 border-r border-light-blue">
+                    <h6 className=" text-base opacity-70">Devices</h6>
                     {devices.map(device => (
                         <AddWidgetDeviceItem
                             key={device._id}
