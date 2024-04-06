@@ -12,12 +12,14 @@ const SignupPage: React.FC = () => {
   const [lastName, setLastName] = useState('');
 
   const [homeId, setHomeId] = useState('65e488cf4e1cb47031e17d01');
-  const [showHomeIdInfo, setShowHomeIdInfo] = useState(false);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [passwordMatchMessage, setPasswordMatchMessage] = useState('');
+
+
+  const [conditionChecked, setConditionChecked] = useState(false);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -64,7 +66,7 @@ const SignupPage: React.FC = () => {
       isValidPasswordRepeat(password, passwordRepeat)
     );
 
-    if (allInputsValid == false) {
+    if (allInputsValid === false) {
       alert("Please fill in all required fields properly");
       return;
     }
@@ -74,6 +76,11 @@ const SignupPage: React.FC = () => {
       return;
     }
 
+
+    if(conditionChecked === false){
+      alert("Please accept the terms and conditions");
+      return
+    }
     userModel.register(username.toLowerCase(), password, firstName, lastName, homeId)
       .then((response) => {
         if (response) {
@@ -123,6 +130,7 @@ const SignupPage: React.FC = () => {
 
             <div className="max-w-md w-full p-10 bg-off-white dark:bg-dark-blue text-dark-blue dark:text-off-white rounded-xl">
               <h2 className="text-2xl mb-4">Getting Started!</h2>
+              <div className="text-sm text-slate-600 dark:text-slate-300">Personal Information</div>
               <Input
                 type="text"
                 placeholder="First Name"
@@ -137,6 +145,7 @@ const SignupPage: React.FC = () => {
                 onChange={handleLastNameChange}
                 isValid={isValidInput}
               />
+              <div className="text-sm text-slate-600 dark:text-slate-300">Home Device Information</div>
               <Input
                 type="text"
                 placeholder="Home Code"
@@ -145,6 +154,7 @@ const SignupPage: React.FC = () => {
                 isValid={isValidInput}
                 infoText="For development purposes, there is only one Home Code."
               />
+              <div className="text-sm text-slate-600 dark:text-slate-300">Account Credentials</div>
               <Input
                 type="text"
                 placeholder="Username"
@@ -168,6 +178,16 @@ const SignupPage: React.FC = () => {
                 isValid={(value) => isValidPasswordRepeat(password, value)}
                 infoText={passwordMatchMessage}
               />
+              <div className="my-1 text-sm">
+                <input
+                  className="mx-2"
+                  type="checkbox"
+                  checked={conditionChecked}
+                  onChange={() => setConditionChecked(!conditionChecked)}
+                />
+                I accept to the <Link to="" onClick={()=> alert("We JUST told you not to read the Terms and Conditions!")} className="underline hover:text-light-blue">Terms and Conditions</Link> without reading.
+              </div>
+
               <button className="w-full bg-light-blue text-off-white dark:text-dark-blue font-bold py-2 rounded hover:bg-indigo-600"
                 onClick={handleSignup}>
                 Create Account
