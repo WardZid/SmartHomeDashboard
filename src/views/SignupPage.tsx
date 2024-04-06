@@ -192,7 +192,7 @@ const SignupPage: React.FC = () => {
                 onClick={handleSignup}>
                 Create Account
               </button>
-              <p>Already have an account? <Link to="/login" className='underline '>Log in!</Link></p>
+              <p>Already have an account? <Link to="/login" className="underline hover:text-light-blue">Log in!</Link></p>
             </div>
           </div>
         </div>

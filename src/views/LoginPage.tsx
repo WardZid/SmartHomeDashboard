@@ -84,7 +84,7 @@ const LoginPage: React.FC = () => {
                 onClick={handleLogin}>
                 Login
               </button>
-              <p>Don't have an account? <Link to="/signup" className='underline '>Sign up!</Link></p>
+              <p>Don't have an account? <Link to="/signup" className="underline hover:text-light-blue">Sign up!</Link></p>
             </div>
           </div>
         </div>
