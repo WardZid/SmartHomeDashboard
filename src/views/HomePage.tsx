@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
             <ul className="text-lg text-center">
               <li>Manage lighting, temperature, and security systems</li>
               <li>Customize schedules and routines</li>
-              <li>Receive real-time notifications</li>
+              {/* <li>Receive real-time notifications</li> */}
             </ul>
           </section>
 
@@ -58,13 +58,13 @@ const HomePage: React.FC = () => {
             <h2 className="text-3xl font-bold mb-4">Get Started Today</h2>
             <p className="text-lg text-center">Transform your home into a smart home today with our easy-to-use dashboard.</p>
           </section>
-          <section className="h-screen flex flex-col justify-center items-center bg-orange text-dark-blue snap-align-start">
+          {/* <section className="h-screen flex flex-col justify-center items-center bg-orange text-dark-blue snap-align-start">
             <table>
               <tbody>
                 {renderTable()}
               </tbody>
             </table>
-          </section>
+          </section> */}
         </div>
 
       </div>
