@@ -48,6 +48,18 @@ export async function isLoggedIn(): Promise<boolean> {
   return true;
 }
 
+export async function register(username: string, password: string, firstName: string, lastName: string, homeId: string): Promise<boolean> {
+  if (await dbAPI.register(username, password)) {
+    await logIn(username, password);
+    const userID = lsAPI.getUserID();
+    if (userID) {
+      const response = await dbAPI.insertNewUserInfo(userID, firstName, lastName, homeId);
+      return response;
+    }
+  }
+  return false;
+}
+
 export async function logIn(username: string, password: string): Promise<boolean> {
   return await dbAPI.login(username, password);
 }

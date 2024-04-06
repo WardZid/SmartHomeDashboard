@@ -9,7 +9,10 @@ const SignupPage: React.FC = () => {
   const { darkMode } = useDarkMode();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [homeId, setHomeId] = useState('');
+
+  const [homeId, setHomeId] = useState('65e488cf4e1cb47031e17d01');
+  const [showHomeIdInfo, setShowHomeIdInfo] = useState(false);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
@@ -48,35 +51,37 @@ const SignupPage: React.FC = () => {
   };
 
   const handleSignup = () => {
-    if (!isValidInput(firstName) || 
-    !isValidInput(lastName) || 
-    !isValidInput(username) || 
-    !isValidInput(password) || 
-    !isValidInput(passwordRepeat)) {
+    //to ensure no one tampers with the home id
+    setHomeId('65e488cf4e1cb47031e17d01');
+
+    if (!isValidInput(firstName) ||
+      !isValidInput(lastName) ||
+      !isValidInput(homeId) ||
+      !isValidInput(username) ||
+      !isValidInput(password) ||
+      !isValidInput(passwordRepeat)) {
       alert("Please fill in all required fields properly");
       return;
     }
 
-    if(password !== passwordRepeat){
+    if (password !== passwordRepeat) {
       alert("Passwords don't match");
       return;
     }
 
-
-    userModel.logIn(username, password)
-      .then((success) => {
-        if (success) {
-          // Redirect or navigate to homepage
-          // Example using React Router: history.push('/homepage');
+    userModel.register(username, password, firstName, lastName, homeId)
+      .then((response) => {
+        if (response) {
           navigate("/login");
         } else {
-          alert("Incorrect Username Or Password");
+          alert("Something went wrong, please try again");
         }
       })
       .catch((error) => {
         console.error("Error:", error);
+        alert(error);
       });
-      
+
   };
 
   const isValidInput = (inputStr: string) => {
@@ -95,7 +100,7 @@ const SignupPage: React.FC = () => {
           <div className="w-full bg-gray-500 bg-opacity-20 flex items-center justify-center">
 
             <div className="max-w-md w-full p-10 bg-off-white dark:bg-dark-blue text-dark-blue dark:text-off-white rounded-xl">
-              <h2 className="text-2xl mb-4">Sign Up!</h2>
+              <h2 className="text-2xl mb-4">Getting Started!</h2>
               <input
                 type="text"
                 placeholder="First Name"
@@ -110,13 +115,25 @@ const SignupPage: React.FC = () => {
                 onChange={handleLastNameChange}
                 className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
               />
-              <input
-                type="text"
-                placeholder="Home Code"
-                value={homeId}
-                onChange={handleHomeIdChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
-              />
+              <div className="flex flex-row relative">
+                <input
+                  type="text"
+                  placeholder="Home Code"
+                  value={homeId}
+                  onChange={handleHomeIdChange}
+                  className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                  readOnly
+                />
+                <div className="absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer"
+                  onMouseEnter={() => setShowHomeIdInfo(true)}
+                  onMouseLeave={() => setShowHomeIdInfo(false)}>
+                  <span className="font-mono">ℹ</span>
+                  {showHomeIdInfo &&
+                    <div className="bg-white border dark:bg-slate-500 border-gray-300 rounded p-2 shadow-md text-sm absolute top-0 left-full ml-2 w-48">
+                      For development purposes, there is only one Home Code.
+                    </div>}
+                </div>
+              </div>
               <input
                 type="text"
                 placeholder="Username"

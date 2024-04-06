@@ -1,6 +1,8 @@
 import * as lsAPI from "./localStorage";
 import * as user from "../models/User";
 
+const registerEndpoint =
+  "https://realm.mongodb.com/api/client/v2.0/app/data-rtanz/auth/providers/local-userpass/register";
 const loginEndpoint =
   "https://realm.mongodb.com/api/client/v2.0/app/data-rtanz/auth/providers/local-userpass/login";
 const refreshTokenEndpoint =
@@ -14,6 +16,33 @@ const accessTokenExpiry = 1800; // 30 mins
 const refreshTokenExpiry = 5184000; // 60 days
 const userIDExpiry = 5184000; // 60 days
 
+export async function register(email, password) {
+  const data = {
+    email: email,
+    password: password,
+  };
+
+  try {
+    const response = await fetch(registerEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+    console.log(responseData);
+    if (responseData && responseData.error) {
+      throw new Error(responseData.error)
+    } else {
+      return responseData;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
 export async function login(email, password) {
   const data = {
     username: email,
@@ -96,9 +125,9 @@ function buildRequest(collectionName, additionalData) {
 async function send(endpoint, collectionName, requestData) {
   const isLoggedIn = await user.isLoggedIn();
   if (isLoggedIn === false) {
-    throw new user.AuthenticationError("Not logged in!")
+    throw new user.AuthenticationError("Not logged in!");
   }
-  
+
   //building request after login check so the request is built with the updated accestoken (in case it was refreshed)
   const request = buildRequest(collectionName, requestData);
 
@@ -162,6 +191,18 @@ async function deleteOne(collectionName, requestData) {
   return response;
 }
 
+export async function insertNewUserInfo(userId,firstName,lastName,homeId) {
+  const requestData = {
+    document: {
+      _id: {$oid: userId},
+      first_name: firstName,
+      last_name: lastName,
+      home_id: { $oid: homeId },
+    },
+  };
+  return await insertOne("users", requestData);
+}
+
 export async function fetchUserInfo() {
   const userID = lsAPI.getUserID();
   const requestData = {
@@ -172,7 +213,7 @@ export async function fetchUserInfo() {
   return await findOne("users", requestData);
 }
 
-export async function addNewRoom(roomName) {
+export async function insertRoom(roomName) {
   const userID = lsAPI.getUserID();
   const requestData = {
     document: {

@@ -28,7 +28,7 @@ export async function getRooms(): Promise<Room[]> {
 }
 
 export async function addRoom(roomName: string) {
-    return await dbAPI.addNewRoom(roomName);
+    return await dbAPI.insertRoom(roomName);
 }
 
 export async function deleteRoom(roomId: string) {
