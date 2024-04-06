@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    userModel.logIn(username, password)
+    userModel.logIn(username.toLowerCase(), password)
       .then((success) => {
         if (success) {
           // Redirect or navigate to homepage

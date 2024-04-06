@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import * as userModel from '../models/User'
 import { useDarkMode } from '../contexts/DarkModeContext';
+import Input from '../components/generic/Input';
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SignupPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [passwordMatchMessage, setPasswordMatchMessage] = useState('');
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -54,12 +56,15 @@ const SignupPage: React.FC = () => {
     //to ensure no one tampers with the home id
     setHomeId('65e488cf4e1cb47031e17d01');
 
-    if (!isValidInput(firstName) ||
-      !isValidInput(lastName) ||
-      !isValidInput(homeId) ||
-      !isValidInput(username) ||
-      !isValidInput(password) ||
-      !isValidInput(passwordRepeat)) {
+    var allInputsValid = (isValidInput(firstName) ||
+      isValidInput(lastName) ||
+      isValidInput(homeId) ||
+      isValidInput(username) ||
+      isValidPassword(password) ||
+      isValidPasswordRepeat(password, passwordRepeat)
+    );
+
+    if (allInputsValid == false) {
       alert("Please fill in all required fields properly");
       return;
     }
@@ -69,7 +74,7 @@ const SignupPage: React.FC = () => {
       return;
     }
 
-    userModel.register(username, password, firstName, lastName, homeId)
+    userModel.register(username.toLowerCase(), password, firstName, lastName, homeId)
       .then((response) => {
         if (response) {
           navigate("/login");
@@ -88,6 +93,23 @@ const SignupPage: React.FC = () => {
     return inputStr.trim() !== '';
   };
 
+  const isValidPassword = (value: string) => {
+    return isValidInput(value) && value.length >= 6 && value.length <= 128;
+  };
+
+  const isValidPasswordRepeat = (password: string, repeatPassword: string) => {
+    const isValidRepeat = (
+      password === repeatPassword
+    );
+    setPasswordMatchMessage(
+      isValidRepeat ? "" : "The password you entered does not match"
+    )
+    return (
+      isValidPassword(repeatPassword) &&
+      isValidRepeat
+    );
+  };
+
   return (
     <div className={darkMode ? 'dark' : ''}>
       <div className='h-screen'>
@@ -101,59 +123,50 @@ const SignupPage: React.FC = () => {
 
             <div className="max-w-md w-full p-10 bg-off-white dark:bg-dark-blue text-dark-blue dark:text-off-white rounded-xl">
               <h2 className="text-2xl mb-4">Getting Started!</h2>
-              <input
+              <Input
                 type="text"
                 placeholder="First Name"
                 value={firstName}
                 onChange={handleFirstNameChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                isValid={isValidInput}
               />
-              <input
+              <Input
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
                 onChange={handleLastNameChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                isValid={isValidInput}
               />
-              <div className="flex flex-row relative">
-                <input
-                  type="text"
-                  placeholder="Home Code"
-                  value={homeId}
-                  onChange={handleHomeIdChange}
-                  className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
-                  readOnly
-                />
-                <div className="absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer"
-                  onMouseEnter={() => setShowHomeIdInfo(true)}
-                  onMouseLeave={() => setShowHomeIdInfo(false)}>
-                  <span className="font-mono">ℹ</span>
-                  {showHomeIdInfo &&
-                    <div className="bg-white border dark:bg-slate-500 border-gray-300 rounded p-2 shadow-md text-sm absolute top-0 left-full ml-2 w-48">
-                      For development purposes, there is only one Home Code.
-                    </div>}
-                </div>
-              </div>
-              <input
+              <Input
+                type="text"
+                placeholder="Home Code"
+                value={homeId}
+                onChange={handleHomeIdChange}
+                isValid={isValidInput}
+                infoText="For development purposes, there is only one Home Code."
+              />
+              <Input
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={handleUsernameChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                isValid={isValidInput}
               />
-              <input
+              <Input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                isValid={isValidPassword}
+                infoText="password must be between 6 and 128 characters"
               />
-              <input
+              <Input
                 type="password"
                 placeholder="Repeat Password"
                 value={passwordRepeat}
                 onChange={handlePasswordRepeatChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400"
+                isValid={(value) => isValidPasswordRepeat(password, value)}
+                infoText={passwordMatchMessage}
               />
               <button className="w-full bg-light-blue text-off-white dark:text-dark-blue font-bold py-2 rounded hover:bg-indigo-600"
                 onClick={handleSignup}>
