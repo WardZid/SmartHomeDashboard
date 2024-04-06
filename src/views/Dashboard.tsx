@@ -216,8 +216,7 @@ const Dashboard: React.FC = () => {
 
               <button
                 className="
-                  bg-light-blue
-                  text-off-white dark:text-dark-blue
+                  text-dark-blue dark:text-orange
                     font-bold 
                     rounded-lg py-1 px-2"
                 onClick={toggleAddWidgetDialog}>
