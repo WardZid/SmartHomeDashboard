@@ -41,16 +41,17 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
     const [settings, setSettings] = useState<SettingsItemProps[]>([]);
 
 
-    useEffect(() => {
+    useEffect(() => {//use effect as to keep themePreference updated
         const updatedSettings = [
             {
                 settingsCategory: settingsCategories[1],
                 title: "Theme",
                 type: "array",
                 values: Object.values(Theme).map(theme => ({ value: theme, label: theme })),
-                selectedValue: themePreference, // Reflects the current value of themePreference
+                selectedValue: themePreference,
                 onSelect: (theme: Theme) => {
-                    setThemePreference(theme); // Update theme preference
+                     // Update theme preference
+                    setThemePreference(theme);
                 }
             }
         ];

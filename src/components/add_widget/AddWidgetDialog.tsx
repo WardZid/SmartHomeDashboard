@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import * as user from "../../models/User";
 import Dialog from '../generic/Dialog';
 import * as deviceModel from "../../models/Device";
 import AddWidgetDeviceItem from "./AddWidgetDeviceItem";
+import { useNavigate } from "react-router-dom";
 
 interface AddWidgetDialogProps {
     isOpen: boolean;
@@ -9,6 +11,7 @@ interface AddWidgetDialogProps {
 }
 
 const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     const [devices, setDevices] = useState<deviceModel.Device[]>([]);
     const [selectedDevice, setSelectedDevice] = useState<deviceModel.Device | null>(null);
 
@@ -19,7 +22,13 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ isOpen, onClose }) =>
                 setDevices(devicesData);
 
             } catch (error) {
-                console.error('Error fetching Devices:', error);
+                if (error instanceof user.AuthenticationError) {
+                    user.logOut();
+                    navigate("/login");
+                    console.log("Credentials Expired");
+                } else {
+                    console.error('Error fetching devices:', error);
+                }
             }
         };
 

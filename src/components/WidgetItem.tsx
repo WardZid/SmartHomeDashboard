@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import * as user from "../models/User";
 import * as widget from '../models/Widget'
 import * as deviceModel from '../models/Device'
 import { useDarkMode } from '../contexts/DarkModeContext';
+import { useNavigate } from 'react-router-dom';
 
 interface WidgetItemProps {
     widget: widget.Widget
 }
 
 const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
+    const navigate = useNavigate();
     const [deviceState, setDeviceState] = useState(widget.device.measurement.state);
     const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
 
@@ -18,7 +21,13 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
             const updatedDevice = await deviceModel.getDevice(widget.device._id);
             widget.device = updatedDevice;
         } catch (error) {
-            console.error('Error updating device state:', error);
+            if (error instanceof user.AuthenticationError) {
+                user.logOut();
+                navigate("/login");
+                console.log("Credentials Expired");
+            } else {
+                console.error('Error updating device state:', error);
+            }
         }
     };
 

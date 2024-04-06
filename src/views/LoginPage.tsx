@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
-import * as dbAPI from '../utils/databaseAPI'
-import * as user from '../models/User'
+import * as userModel from '../models/User'
 import { useDarkMode } from '../contexts/DarkModeContext';
 
 const LoginPage: React.FC = () => {
@@ -13,7 +12,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      if (await user.isLoggedIn()) {
+      if (await userModel.isLoggedIn()) {
         navigate('/dashboard');
       }
     };
@@ -35,7 +34,7 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    dbAPI.login(username, password)
+    userModel.logIn(username, password)
       .then((success) => {
         if (success) {
           // Redirect or navigate to homepage

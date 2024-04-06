@@ -14,6 +14,37 @@ const accessTokenExpiry = 1800; // 30 mins
 const refreshTokenExpiry = 5184000; // 60 days
 const userIDExpiry = 5184000; // 60 days
 
+export async function login(email, password) {
+  const data = {
+    username: email,
+    password: password,
+  };
+
+  try {
+    const response = await fetch(loginEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+    if (responseData && responseData.error) {
+      return false;
+    } else {
+      lsAPI.setAccessToken(responseData.access_token, accessTokenExpiry);
+      lsAPI.setRefreshToken(responseData.refresh_token, refreshTokenExpiry);
+      lsAPI.setUserID(responseData.user_id, userIDExpiry);
+
+      return true;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
 export async function refreshAccessToken() {
   const refreshToken = lsAPI.getRefreshToken();
   const request = {
@@ -26,7 +57,7 @@ export async function refreshAccessToken() {
   try {
     const response = await fetch(refreshTokenEndpoint, request);
     if (!response.ok) {
-      user.signOut();
+      //user.signOut();
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
@@ -62,53 +93,50 @@ function buildRequest(collectionName, additionalData) {
   return request;
 }
 
-async function send(endpoint, request) {
-  if (await user.isLoggedIn()) {
-    try {
-      const response = await fetch(endpoint, request);
+async function send(endpoint, collectionName, requestData) {
+  const isLoggedIn = await user.isLoggedIn();
+  if (isLoggedIn === false) {
+    throw new user.AuthenticationError("Not logged in!")
+  }
+  
+  //building request after login check so the request is built with the updated accestoken (in case it was refreshed)
+  const request = buildRequest(collectionName, requestData);
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          user.signOut();
-        }
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  try {
+    const response = await fetch(endpoint, request);
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        //user.signOut();
       }
-
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error("Error:", error);
-      return null;
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
   }
 }
 async function findOne(collectionName, requestData) {
   const endpoint = dataEndpoint + "/findOne";
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response.document;
 }
 async function findMany(collectionName, requestData) {
   const endpoint = dataEndpoint + "/find";
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response.documents;
 }
 async function aggregate(collectionName, requestData) {
   const endpoint = dataEndpoint + "/aggregate";
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response.documents;
 }
-
 async function insertOne(collectionName, requestData) {
   const endpoint = dataEndpoint + "/insertOne";
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response;
 }
 async function updateOne(collectionName, updateData, filterId) {
@@ -124,49 +152,14 @@ async function updateOne(collectionName, updateData, filterId) {
       },
     },
   };
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response;
 }
 
 async function deleteOne(collectionName, requestData) {
   const endpoint = dataEndpoint + "/deleteOne";
-  const request = buildRequest(collectionName, requestData);
-
-  const response = await send(endpoint, request);
+  const response = await send(endpoint, collectionName, requestData);
   return response;
-}
-
-export async function login(email, password) {
-  const data = {
-    username: email,
-    password: password,
-  };
-
-  try {
-    const response = await fetch(loginEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const responseData = await response.json();
-    if (responseData && responseData.error) {
-      return false;
-    } else {
-      lsAPI.setAccessToken(responseData.access_token, accessTokenExpiry);
-      lsAPI.setRefreshToken(responseData.refresh_token, refreshTokenExpiry);
-      lsAPI.setUserID(responseData.user_id, userIDExpiry);
-
-      return true;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
 }
 
 export async function fetchUserInfo() {

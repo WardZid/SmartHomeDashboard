@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import * as dbAPI from "../utils/databaseAPI";
 import * as lsAPI from "../utils/localStorage";
 
@@ -8,8 +9,17 @@ export interface User {
   home_id: string;
 }
 
+export class AuthenticationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthenticationError";
+    // Ensure the error prototype is correctly set when extending built-in classes in TypeScript
+    Object.setPrototypeOf(this, AuthenticationError.prototype);
+  }
+}
+
 export async function getUserInfo(): Promise<User | null> {
-  let userInfo: User| null = lsAPI.getUserInfoFromSessionStorage();
+  let userInfo: User | null = lsAPI.getUserInfoFromSessionStorage();
   if (userInfo == null) {
     userInfo = await dbAPI.fetchUserInfo();
     if (userInfo) {
@@ -21,7 +31,7 @@ export async function getUserInfo(): Promise<User | null> {
 
 export async function isLoggedIn(): Promise<boolean> {
   if (lsAPI.isCookieExpired("refreshToken")) {
-    signOut();
+    logOut();
     return false;
   }
 
@@ -31,13 +41,18 @@ export async function isLoggedIn(): Promise<boolean> {
 
   // Check again after refreshing access token
   if (lsAPI.isCookieExpired("accessToken")) {
-    signOut();
+    logOut();
     return false;
   }
 
   return true;
 }
 
-export function signOut(): void {
+export async function logIn(username: string, password: string): Promise<boolean> {
+  return await dbAPI.login(username, password);
+}
+
+export function logOut(): void {
   lsAPI.clear();
 }
+

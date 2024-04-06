@@ -9,6 +9,7 @@ import WatchingCircle from '../components/WatchingCircle';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/settings/SettingsDialog';
 import AddWidgetDialog from '../components/add_widget/AddWidgetDialog';
+import { AuthenticationError } from '../models/User';
 
 
 const Dashboard: React.FC = () => {
@@ -28,7 +29,7 @@ const Dashboard: React.FC = () => {
       const loggedIn = await user.isLoggedIn();
       if (!loggedIn) {
         // If not logged in, sign out and redirect to login
-        user.signOut();
+        user.logOut();
         navigate('/login');
       }
     };
@@ -42,7 +43,13 @@ const Dashboard: React.FC = () => {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        if (error instanceof user.AuthenticationError) {
+          user.logOut();
+          navigate("/login");
+          console.log("Credentials Expired");
+        } else {
+          console.error('Error:', error);
+        }
       });
 
 
@@ -55,7 +62,13 @@ const Dashboard: React.FC = () => {
         }
 
       } catch (error) {
-        console.error('Error fetching rooms:', error);
+        if (error instanceof user.AuthenticationError) {
+          user.logOut();
+          navigate("/login");
+          console.log("Credentials Expired");
+        } else {
+          console.error('Error fetching rooms:', error);
+        }
       }
     };
 
@@ -74,7 +87,13 @@ const Dashboard: React.FC = () => {
       }
       setNewRoomName(''); // Clear the input field
     } catch (error) {
-      console.error('Error creating room:', error);
+      if (error instanceof user.AuthenticationError) {
+        user.logOut();
+        navigate("/login");
+        console.log("Credentials Expired");
+      } else {
+        console.error('Error Creating Room:', error);
+      }
     }
   };
 
@@ -85,7 +104,13 @@ const Dashboard: React.FC = () => {
       const updatedRooms = await room.getRooms();
       setRooms(updatedRooms);
     } catch (error) {
-      console.error('Error deleting room:', error);
+      if (error instanceof user.AuthenticationError) {
+        user.logOut();
+        navigate("/login");
+        console.log("Credentials Expired");
+      } else {
+        console.error('Error deleting room:', error);
+      }
     }
   };
 
@@ -100,8 +125,9 @@ const Dashboard: React.FC = () => {
     navigate("/");
   };
   const handleLogout = () => {
-    user.signOut();
+    user.logOut();
     navigate("/login");
+    console.log("Logged out successfully");
   };
   const toggleSettingsDialog = () => {
     setIsSettingsOpen(!isSettingsOpen);
