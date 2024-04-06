@@ -142,23 +142,22 @@ const Dashboard: React.FC = () => {
       <div
         className="
           h-screen flex flex-col 
-        bg-off-white dark:bg-slate-700
+        bg-slate-50 dark:bg-slate-700
         text-dark-blue dark:text-off-white "
       >
         <div className="flex h-full flex-row overflow-hidden">
 
-          <div className="bg-dark-blue pt-4 w-52 flex flex-col px-2">
+          <div className="bg-off-white dark:bg-dark-blue pt-4 w-52 flex flex-col px-2">
 
             <div className="flex justify-center items-center pb-4">
               {/*TODO dark mode fix*/}
               <div onClick={handleEyeClick}>
-                <WatchingCircle outerCircleColor="#EEEEEE" innerCircleColor="#042A35" />
+                <WatchingCircle outerCircleColor={darkMode ? "#EEEEEE" : "#042A35"} innerCircleColor={darkMode ? "#042A35" : "#EEEEEE"} />
               </div>
               <h1 className="px-2">Hello, {fullName}!</h1>
             </div>
 
-            {/*TODO dark mode fix*/}
-            <div className="py-1 px-2 hover:bg-slate-700 cursor-pointer rounded-xl flex flex-col">
+            <div className="py-1 px-1 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer rounded-lg flex flex-col">
               <input
                 type="text"
                 className="text-lg px-2 bg-transparent border-none focus:outline-none"
@@ -168,7 +167,7 @@ const Dashboard: React.FC = () => {
               />
 
               <button
-                className="text-lg font-bold px-2 hover:bg-slate-500 
+                className="text-lg font-bold px-2 border-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600
                 cursor-pointer rounded-lg"
                 onClick={handleCreateRoom}
               >
@@ -192,11 +191,11 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center py-2">
-              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
+              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
                 onClick={toggleSettingsDialog}>
                 Settings
               </button>
-              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-700"
+              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
                 onClick={handleLogout}>
                 Log Out
               </button>
@@ -208,12 +207,17 @@ const Dashboard: React.FC = () => {
               className="
             flex flex-row
             px-4 py-2">
-              <h1 className="flex-grow text-2xl font-bold inline">Smart Home Automation Dashboard</h1>
+              <div className="flex-grow flex flex-row text-2xl font-bold">
+                <div className="dark:text-off-white text-dark-blue">Smart </div>
+                <div className="dark:text-off-white text-orange">Home </div>
+                <div className="dark:text-off-white text-dark-blue">Automation </div>
+                <div className="dark:text-off-white text-orange">Dashboard</div>
+              </div>
 
               <button
                 className="
                   bg-light-blue
-                  text-dark-blue
+                  text-off-white dark:text-dark-blue
                     font-bold 
                     rounded-lg py-1 px-2"
                 onClick={toggleAddWidgetDialog}>

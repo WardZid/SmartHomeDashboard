@@ -55,7 +55,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({ settingsCategory, title, ty
     return (
         <div className="border-b border-light-blue pb-1">
             <div
-                className={`py-4 px-4 rounded-lg flex flex-row items-center w-full `}
+                className={`py-4 px-4 rounded-lg flex flex-row items-center w-full`}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >

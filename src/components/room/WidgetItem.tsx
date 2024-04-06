@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import * as user from "../models/User";
-import * as widget from '../models/Widget'
-import * as deviceModel from '../models/Device'
-import { useDarkMode } from '../contexts/DarkModeContext';
+import * as user from "../../models/User";
+import * as widget from '../../models/Widget'
+import * as deviceModel from '../../models/Device'
+import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useNavigate } from 'react-router-dom';
 
 interface WidgetItemProps {
@@ -37,7 +37,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 return (
                     <div>
                         <button
-                            className={`rounded w-full p-1 text-dark-blue dark:text-off-white 
+                            className={`rounded w-full p-1 text-off-white 
                             ${deviceState === '0' ? 'bg-rose-800' : 'bg-lime-800'}`
                             }
                             onClick={() => handleDeviceStateChange(deviceState === '0' ? '1' : '0')}

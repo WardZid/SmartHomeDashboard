@@ -17,7 +17,7 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
     };
 
     const handleDeleteClick = async (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-        event.stopPropagation(); // Prevents handleRoomClick from being called
+        event.stopPropagation();
         setIsDeleting(true);
         try {
             await onDelete(room._id);
@@ -37,23 +37,24 @@ const RoomItem: React.FC<RoomItemProps> = ({ room, onSelect, onDelete, isSelecte
     };
 
     return (
-            <div
-                className={`py-1 px-2 cursor-pointer rounded-lg flex flex-row justify-between ${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'} dark:${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'}`}
-                onClick={handleRoomClick}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{ opacity: isDeleting ? 0.5 : 1 }}
-            >
-                <h2 className={`text-lg text-dark-blue dark:text-white `}>{room.room_name}</h2>
-                {isHovered && (
-                    <img
-                        className={`h-4 relative top-2 right-0 opacity-70 hover:opacity-100`}
-                        src={`${process.env.PUBLIC_URL}/icons/delete-room.png`}
-                        alt=""
-                        onClick={handleDeleteClick}
-                    />
-                )}
-            </div>
+        <div
+            className={`py-1 px-2 cursor-pointer rounded-lg flex flex-row justify-between
+                ${isSelected ? 'bg-slate-400 dark:bg-slate-600' : 'hover:bg-slate-300 dark:hover:bg-slate-700'}`}
+            onClick={handleRoomClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{ opacity: isDeleting ? 0.5 : 1 }}
+        >
+            <h2 className={`text-lg text-dark-blue dark:text-white `}>{room.room_name}</h2>
+            {isHovered && (
+                <img
+                    className={`h-4 relative top-2 right-0 opacity-70 hover:opacity-100`}
+                    src={`${process.env.PUBLIC_URL}/icons/delete-room.png`}
+                    alt=""
+                    onClick={handleDeleteClick}
+                />
+            )}
+        </div>
 
     );
 };

@@ -24,8 +24,7 @@ const AddWidgetDeviceItem: React.FC<AddWidgetDeviceItemProps> = ({ device, onSel
     return (
         <div
             className={`py-1 px-2 cursor-pointer rounded-lg flex flex-row justify-between w-full
-            ${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'} 
-            dark:${isSelected ? 'bg-slate-600' : 'hover:bg-slate-700'}`}
+            ${isSelected ? 'bg-slate-400 dark:bg-slate-600' : 'hover:bg-slate-300 dark:hover:bg-slate-700'}`}
             onClick={handleDeviceClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}

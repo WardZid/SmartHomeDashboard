@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as widgetModel from "../../models/Widget";
-import WidgetItem from "../WidgetItem";
+import WidgetItem from "./WidgetItem";
 import RGL, { Layout, WidthProvider } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css"
 import "/node_modules/react-resizable/css/styles.css"
