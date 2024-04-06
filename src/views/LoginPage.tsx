@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import * as userModel from '../models/User'
 import { useDarkMode } from '../contexts/DarkModeContext';
+import Input from '../components/generic/Input';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,19 +67,19 @@ const LoginPage: React.FC = () => {
 
             <div className="max-w-md w-full p-10 bg-off-white dark:bg-dark-blue text-dark-blue dark:text-off-white rounded-xl">
               <h2 className="text-2xl mb-4">Welcome Home!</h2>
-              <input
+              <Input
                 type="text"
                 placeholder="Username"
                 value={username}
+                isValid={isValidInput}
                 onChange={handleUsernameChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-off-white"
               />
-              <input
+              <Input
                 type="password"
                 placeholder="Password"
                 value={password}
+                isValid={isValidInput}
                 onChange={handlePasswordChange}
-                className="w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-off-white"
               />
               <button className="w-full bg-light-blue text-off-white dark:text-dark-blue font-bold py-2 rounded hover:bg-indigo-600"
                 onClick={handleLogin}>
