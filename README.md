@@ -5,8 +5,8 @@ Welcome to the Smart Home Automation Dashboard repository! This project aims to 
 ![GitHub stars](https://img.shields.io/github/stars/WardZid/smart-home-dashboard?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/WardZid/smart-home-dashboard?style=flat-square)
 ![GitHub watchers](https://img.shields.io/github/watchers/WardZid/smart-home-dashboard?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/WardZid/smart-home-dashboard?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/WardZid/smart-home-dashboard?style=flat-square)<!--
+![GitHub contributors](https://img.shields.io/github/contributors/WardZid/smart-home-dashboard?style=flat-square)-->
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/WardZid/smart-home-dashboard?style=flat-square)
 
 
