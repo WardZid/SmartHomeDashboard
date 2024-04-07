@@ -2,11 +2,19 @@
 
 Welcome to the Smart Home Automation Dashboard repository! This project aims to provide a comprehensive solution for managing and controlling various smart home devices from a centralized web application.
 
-[![GitHub stars](https://img.shields.io/github/stars/WardZid/smart-home-dashboard)](https://github.com/WardZid/smart-home-dashboard/stargazers)\
-[![GitHub forks](https://img.shields.io/github/forks/WardZid/smart-home-dashboard)](https://github.com/WardZid/smart-home-dashboard/network)\
-[![GitHub issues](https://img.shields.io/github/issues/WardZid/smart-home-dashboard)](https://github.com/WardZid/smart-home-dashboard/issues)\
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/WardZid/smart-home-dashboard)
+![GitHub stars](https://img.shields.io/github/stars/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub watchers](https://img.shields.io/github/watchers/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/WardZid/smart-home-dashboard?style=flat-square)
 
+
+<!--
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub language count](https://img.shields.io/github/languages/count/WardZid/smart-home-dashboard?style=flat-square)
+![GitHub top language](https://img.shields.io/github/languages/top/WardZid/smart-home-dashboard?style=flat-square)
+-->
 ## Features
 
 - **User Authentication**: Secure user authentication system using JSON Web Tokens (JWT).
