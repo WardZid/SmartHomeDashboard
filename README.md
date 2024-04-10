@@ -18,6 +18,8 @@ Welcome to the Smart Home Automation Dashboard repository! This project aims to 
 ## Features
 
 - **User Authentication**: Secure user authentication system using JSON Web Tokens (JWT).
+    - **Access Token**: A short lived session token.
+    - **Refresh Token**: A longer lifespan token assigned on logging in and is used to retrieve a new access token in the event of an outdated access token without the need for the user to renter their credentials.
 - **Dashboard Overview**: View a summary of all connected smart devices and their current status.
 - **Device Control**: Control individual devices remotely, including lights, thermostats, security cameras, and more.
 - **Data Visualization**: Visualize historical data and analytics for energy consumption, temperature trends, and other relevant metrics.
