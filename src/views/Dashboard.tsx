@@ -224,11 +224,9 @@ const Dashboard: React.FC = () => {
               </button>
             </div>
 
-            <div className="overflow-y-scroll flex-grow"
-              style={{
-                scrollbarWidth: 'thin',
-                scrollbarColor: '#888 transparent'
-              }}>
+            <div
+              className="overflow-y-scroll flex-grow"
+            >
               {/* Render RoomDashboard component if a room is selected */}
               {selectedRoom && <RoomDashboard roomId={selectedRoom._id} />}
             </div>
