@@ -23,7 +23,7 @@ const AddWidgetItemsPanel: React.FC<AddWidgetItemsPanelProps> = ({ device, onSel
             row_span: 1,
             col_span: 1,
             device: device
-        }/* ,
+        },
         {
             _id: '',
             device_id: device._id,
@@ -35,7 +35,7 @@ const AddWidgetItemsPanel: React.FC<AddWidgetItemsPanelProps> = ({ device, onSel
             row_span: 1,
             col_span: 2,
             device: device
-        } */
+        }
         ]
 
     });

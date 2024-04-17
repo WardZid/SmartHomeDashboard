@@ -8,6 +8,7 @@ export interface Device {
     title: string;
     home_id: string;
     measurement: Measurement;
+    history: History[];
 }
 
 export interface Measurement {
@@ -15,6 +16,11 @@ export interface Measurement {
     min: number;
     max: number;
     state: string
+}
+
+export interface History {
+    datetime: Date;
+    state: string;
 }
 
 export async function updateDeviceState(deviceId: string, state: string) {
@@ -25,8 +31,8 @@ export async function getDevice(deviceId: string): Promise<Device> {
 
     const deviceData = await dbAPI.getDevice(deviceId);
 
-    const device: Device = deviceData
-
+    const device: Device = deviceData;
+    
     return device;
 }
 
@@ -38,7 +44,7 @@ export async function getDevices(): Promise<Device[]> {
             return [];
         }
         const devicesData = await dbAPI.getDevices(userInfo.home_id);
-
+        
         // Transform the response into an array of Device objects
         const devices: Device[] = devicesData.map((device: any) => ({
             _id: device._id,
