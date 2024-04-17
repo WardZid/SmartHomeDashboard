@@ -65,7 +65,8 @@ const AddWidgetItemsPanel: React.FC<AddWidgetItemsPanelProps> = ({ device, onSel
                 <div
                     key={sampleWidget.title}
                     className={`w-full p-1 flex flex-col items-center
-                    hover:bg-slate-700 rounded border-2 
+                    hover:bg-slate-300 dark:hover:bg-slate-700 
+                    rounded border-2
                     ${selectedWidget === sampleWidget ? "border-light-blue bg-slate-700" : 'border-transparent'}`}
                     onMouseEnter={() => handleWidgetHover(sampleWidget)}
                     onMouseLeave={() => handleWidgetHover(null)}

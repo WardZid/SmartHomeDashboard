@@ -75,6 +75,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 w-full h-full
                 flex flex-col
                 overflow-hidden
+                shadow-lg
                 border-dark-blue`}
             style={{
                 userSelect: 'none'
