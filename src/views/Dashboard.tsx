@@ -132,8 +132,12 @@ const Dashboard: React.FC = () => {
   const toggleSettingsDialog = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
+
   const toggleAddWidgetDialog = () => {
-    setIsAddWidgetDialogOpen(!isAddWidgetDialogOpen);
+    //if no room is selected (shouldnt happen), the dialog wont open
+    if (selectedRoom) {
+      setIsAddWidgetDialogOpen(!isAddWidgetDialogOpen);
+    }
   };
 
 
@@ -215,10 +219,11 @@ const Dashboard: React.FC = () => {
               </div>
 
               <button
-                className="
+                className={`
                   text-dark-blue dark:text-orange
                     font-bold 
-                    rounded-lg py-1 px-2"
+                    rounded-lg py-1 px-2
+                    ${selectedRoom? "" : 'opacity-20'}`}
                 onClick={toggleAddWidgetDialog}>
                 Add Widget
               </button>
@@ -236,7 +241,7 @@ const Dashboard: React.FC = () => {
 
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
-      <AddWidgetDialog isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
+      <AddWidgetDialog roomId={selectedRoom? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
     </div>
 
   );

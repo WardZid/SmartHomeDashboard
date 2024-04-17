@@ -37,6 +37,19 @@ export async function getWidgets(roomId: string): Promise<Widget[]> {
     return widgets;
 }
 
+export async function addWidget(
+    deviceId: string,
+    roomId: string,
+    title: string,
+    type: string,
+    row: number,
+    col: number,
+    rowSpan: number,
+    colSpan: number) {
+
+    return await dbAPI.insertWidget(deviceId, roomId, title, type, row, col, rowSpan, colSpan)
+}
+
 export async function updateWidgetLocationAndSize(widgetId: string, row: number, col: number, rowSpan: number, colSpan: number) {
-    return await dbAPI.updateWidgetLocationAndSize(widgetId, row, col,rowSpan,colSpan);
+    return await dbAPI.updateWidgetLocationAndSize(widgetId, row, col, rowSpan, colSpan);
 }

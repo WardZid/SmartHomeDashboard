@@ -34,7 +34,7 @@ export async function register(email, password) {
     const responseData = await response.json();
     console.log(responseData);
     if (responseData && responseData.error) {
-      throw new Error(responseData.error)
+      throw new Error(responseData.error);
     } else {
       return responseData;
     }
@@ -191,10 +191,10 @@ async function deleteOne(collectionName, requestData) {
   return response;
 }
 
-export async function insertNewUserInfo(userId,firstName,lastName,homeId) {
+export async function insertNewUserInfo(userId, firstName, lastName, homeId) {
   const requestData = {
     document: {
-      _id: {$oid: userId},
+      _id: { $oid: userId },
       first_name: firstName,
       last_name: lastName,
       home_id: { $oid: homeId },
@@ -266,6 +266,31 @@ export async function getWidgets(roomId) {
   };
 
   return await aggregate("widgets", requestData);
+}
+
+export async function insertWidget(
+  deviceId,
+  roomId,
+  title,
+  type,
+  row,
+  col,
+  rowSpan,
+  colSpan
+) {
+  const requestData = {
+    document: {
+      device_id: { $oid: deviceId },
+      room_id: { $oid: roomId },
+      title: title,
+      type: type,
+      row: row,
+      col: col,
+      row_span: rowSpan,
+      col_span: colSpan,
+    },
+  };
+  return await insertOne("widgets", requestData);
 }
 
 export async function updateWidgetLocationAndSize(

@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
                 isValid={isValidInput}
                 onChange={handlePasswordChange}
               />
-              <button className="w-full bg-light-blue text-off-white dark:text-dark-blue font-bold py-2 rounded hover:bg-indigo-600"
+              <button className="w-full font-bold py-2 rounded bg-light-blue hover:bg-opacity-90 active:bg-opacity-70 text-off-white dark:text-dark-blue "
                 onClick={handleLogin}>
                 Login
               </button>
