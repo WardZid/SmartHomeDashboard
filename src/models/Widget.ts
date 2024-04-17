@@ -7,6 +7,7 @@ export interface Widget {
     device_id: string;
     room_id: string;
     title: string;
+    type: string;
     row: number;
     col: number;
     row_span: number;
@@ -25,6 +26,7 @@ export async function getWidgets(roomId: string): Promise<Widget[]> {
         device_id: widgetData.device_id,
         room_id: widgetData.room_id,
         title: widgetData.title,
+        type: widgetData.type,
         row: widgetData.row,
         col: widgetData.col,
         row_span: widgetData.row_span,

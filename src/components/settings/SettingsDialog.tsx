@@ -68,6 +68,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
         setSelectedSettingsCategory(category);
     };
 
+    //Filter settings by their category
     const filteredSettings = selectedSettingsCategory.title === "General"
         ? settings
         : settings.filter(setting => setting.settingsCategory.title === selectedSettingsCategory.title);
