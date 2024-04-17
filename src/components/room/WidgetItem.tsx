@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Chart from 'chart.js/auto';
+
 import * as user from "../../models/User";
 import * as widget from '../../models/Widget'
 import * as deviceModel from '../../models/Device'
-import { useDarkMode } from '../../contexts/DarkModeContext';
-import { useNavigate } from 'react-router-dom';
+
 
 interface WidgetItemProps {
     widget: widget.Widget
@@ -13,6 +15,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
     const navigate = useNavigate();
     const [deviceState, setDeviceState] = useState(widget.device.measurement.state);
     const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
+    const chartRef = useRef<HTMLCanvasElement>(null);
 
     const handleDeviceStateChange = async (newValue: string) => {
         setDeviceState(newValue);
@@ -31,6 +34,31 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
         }
     };
 
+    useEffect(() => {
+        if (widget.type === "history" && widget.device.history) {
+            const ctx = chartRef.current?.getContext('2d');
+            if (ctx) {
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: widget.device.history.map(entry => entry.datetime.toLocaleString()),
+                        datasets: [{
+                            label: 'State',
+                            data: widget.device.history.map(entry => entry.state),
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1,
+                            fill: false
+                        }]
+                    },
+                    options: {}
+                });
+                return () => {
+                    myChart.destroy()
+                }
+            }
+        }
+    }, []);
+
     const renderValueControl = () => {
         switch (widget.type) {
             case "control": {
@@ -40,9 +68,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                         return (
                             <div>
                                 <button
-                                    className={`rounded w-full p-1 text-off-white 
-                            ${deviceState === '0' ? 'bg-rose-800' : 'bg-lime-800'}`
-                                    }
+                                    className={`rounded w-full p-1 text-off-white ${deviceState === '0' ? 'bg-rose-800' : 'bg-lime-800'}`}
                                     onClick={() => handleDeviceStateChange(deviceState === '0' ? '1' : '0')}
                                 >
                                     {deviceState === '0' ? 'OFF' : 'ON'}
@@ -69,6 +95,11 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 }
             }
             case "history": {
+                if (widget.device.history) {
+                    return (
+                        <canvas ref={chartRef}></canvas>
+                    );
+                }
                 return null;
             }
             default:

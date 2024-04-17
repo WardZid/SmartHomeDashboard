@@ -9,6 +9,15 @@ export interface AddWidgetItemsPanelProps {
 }
 
 const AddWidgetItemsPanel: React.FC<AddWidgetItemsPanelProps> = ({ device, onSelect }) => {
+    //sample history data
+    device.history = [
+        { datetime: new Date("2022-01-01T08:00:00"), state: '20' },
+        { datetime: new Date("2022-01-01T08:15:00"), state: '22' },
+        { datetime: new Date("2022-01-01T08:30:00"), state: '25' },
+        { datetime: new Date("2022-01-01T08:45:00"), state: '24' },
+        { datetime: new Date("2022-01-01T09:00:00"), state: '27' },
+    ]
+
     const [sampleWidgets, setSampleWidgets] = useState<Widget[]>(() => {
         //here we add types of widgets for each device
         //new widgets have a row/col positions of -1, they are given correct positions when the room they have been added to loads them in for the first time (the room places them accordingly)
