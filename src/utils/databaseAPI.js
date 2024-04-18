@@ -243,6 +243,31 @@ export async function getRooms() {
   return await findMany("rooms", requestData);
 }
 
+export async function getWidget(widgetId) {
+  const requestData = {
+    pipeline: [
+      {
+        $match: {
+          _id: { $oid: widgetId },
+        },
+      },
+      {
+        $lookup: {
+          from: "devices",
+          localField: "device_id",
+          foreignField: "_id",
+          as: "device",
+        },
+      },
+      {
+        $unwind: "$device",
+      },
+    ],
+  };
+
+  return (await aggregate("widgets", requestData))[0];
+}
+
 export async function getWidgets(roomId) {
   const requestData = {
     pipeline: [
@@ -262,6 +287,7 @@ export async function getWidgets(roomId) {
       {
         $unwind: "$device",
       },
+      //tried to add a filter for dates but some memory leak completely fucked everything
     ],
   };
 
@@ -273,6 +299,7 @@ export async function insertWidget(
   roomId,
   title,
   type,
+  historyRange,
   row,
   col,
   rowSpan,
@@ -284,6 +311,7 @@ export async function insertWidget(
       room_id: { $oid: roomId },
       title: title,
       type: type,
+      history_range: historyRange,
       row: row,
       col: col,
       row_span: rowSpan,
@@ -305,6 +333,13 @@ export async function updateWidgetLocationAndSize(
     col: col,
     row_span: rowSpan,
     col_span: colSpan,
+  };
+  return await updateOne("widgets", updateData, widgetId);
+}
+
+export async function updateWidgetHistoryRange(widgetId, historyRange) {
+  const updateData = {
+    history_range: historyRange,
   };
   return await updateOne("widgets", updateData, widgetId);
 }

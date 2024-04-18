@@ -1,5 +1,4 @@
 import * as dbAPI from "../utils/databaseAPI";
-import * as lsAPI from "../utils/localStorage";
 import * as device from "./Device";
 
 export interface Widget {
@@ -8,6 +7,7 @@ export interface Widget {
     room_id: string;
     title: string;
     type: string;
+    history_range: string;
     row: number;
     col: number;
     row_span: number;
@@ -15,6 +15,14 @@ export interface Widget {
     device: device.Device;
 }
 
+export async function getWidget(widgetId: string): Promise<Widget> {
+
+    const widgetData = await dbAPI.getWidget(widgetId);
+
+    const widget: Widget = widgetData;
+     
+    return widget;
+}
 
 export async function getWidgets(roomId: string): Promise<Widget[]> {
     // get widgets as a json array
@@ -27,6 +35,7 @@ export async function getWidgets(roomId: string): Promise<Widget[]> {
         room_id: widgetData.room_id,
         title: widgetData.title,
         type: widgetData.type,
+        history_range: widgetData.history_range,
         row: widgetData.row,
         col: widgetData.col,
         row_span: widgetData.row_span,
@@ -42,14 +51,19 @@ export async function addWidget(
     roomId: string,
     title: string,
     type: string,
+    historyRange: string,
     row: number,
     col: number,
     rowSpan: number,
     colSpan: number) {
 
-    return await dbAPI.insertWidget(deviceId, roomId, title, type, row, col, rowSpan, colSpan)
+    return await dbAPI.insertWidget(deviceId, roomId, title, type, historyRange, row, col, rowSpan, colSpan)
 }
 
 export async function updateWidgetLocationAndSize(widgetId: string, row: number, col: number, rowSpan: number, colSpan: number) {
     return await dbAPI.updateWidgetLocationAndSize(widgetId, row, col, rowSpan, colSpan);
+}
+
+export async function updateWidgetHistoryRange(widgetId: string, historyRange: string) {
+    return await dbAPI.updateWidgetHistoryRange(widgetId, historyRange);
 }

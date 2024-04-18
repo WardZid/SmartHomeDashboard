@@ -3,21 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import Chart from 'chart.js/auto';
 
 import * as user from "../../models/User";
-import * as widget from '../../models/Widget'
+import * as widgetModel from '../../models/Widget'
 import * as deviceModel from '../../models/Device'
 
 
 interface WidgetItemProps {
-    widget: widget.Widget;
+    widget: widgetModel.Widget;
     onDetailsOpen: (widgetId:string) => void;
 }
 
 const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
     const navigate = useNavigate();
     const [deviceState, setDeviceState] = useState(widget.device.measurement.state);
-    const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
+    // const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
     const chartRef = useRef<HTMLCanvasElement>(null);
+    const [selectedHistoryRange, setSelectedHistoryRange] = useState<string>(() => {
+        return widget.history_range ? widget.history_range : '1D';
+    });
 
+
+    //handle control widget actions
     const handleDeviceStateChange = async (newValue: string) => {
         setDeviceState(newValue);
         try {
@@ -38,6 +43,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
       onDetailsOpen(widget._id);
     };
 
+    //Set up line chart for history widgets
     useEffect(() => {
         if (widget.type === "history" && widget.device.history) {
             const ctx = chartRef.current?.getContext('2d');
@@ -61,6 +67,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
                 }
             }
         }
+
     }, []);
 
     const renderValueControl = () => {
@@ -101,7 +108,19 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
             case "history": {
                 if (widget.device.history) {
                     return (
-                        <canvas ref={chartRef}></canvas>
+                        <div className="flex flex-col">
+                            <div className="flex flex-row gap-2 px-16">
+                                <button onClick={() => handleRangeSelect('1D')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  ${selectedHistoryRange === '1D' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>1D</button>
+                                <button onClick={() => handleRangeSelect('1W')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  ${selectedHistoryRange === '1W' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>1W</button>
+                                <button onClick={() => handleRangeSelect('1M')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  ${selectedHistoryRange === '1M' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>1M</button>
+                                <button onClick={() => handleRangeSelect('MTD')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${selectedHistoryRange === 'MTD' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>MTD</button>
+                                <button onClick={() => handleRangeSelect('6M')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  ${selectedHistoryRange === '6M' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>6M</button>
+                                <button onClick={() => handleRangeSelect('1Y')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  ${selectedHistoryRange === '1Y' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>1Y</button>
+                                <button onClick={() => handleRangeSelect('YTD')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${selectedHistoryRange === 'YTD' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>YTD</button>
+                                <button onClick={() => handleRangeSelect('All')} className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${selectedHistoryRange === 'All' ? 'bg-slate-300 dark:bg-slate-700' : ''}`}>All</button>
+                            </div>
+                            <canvas ref={chartRef} />
+                        </div>
                     );
                 }
                 return null;
@@ -111,6 +130,13 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
 
         }
 
+    };
+    
+
+    const handleRangeSelect = (range: string) => {
+        setSelectedHistoryRange(range);
+        // You can perform any additional actions here, like fetching data for the selected range
+        widgetModel.updateWidgetHistoryRange(widget._id,range);
     };
 
     return (
@@ -144,13 +170,13 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
 
                         </div>
 
-                        {isMoreMenuOpen &&
+                        {/* {isMoreMenuOpen &&
                             <div className="absolute right-0 p-1 rounded-lg text-lg
                                 bg-off-white dark:bg-slate-700 shadow-md">
                                 <div className="block px-3 rounded hover:dark:bg-slate-600">More</div>
                                 <div className="block px-3 rounded hover:dark:bg-slate-600 text-red-500">Delete</div>
                             </div>
-                        }
+                        } */}
                     </div>
 
                 </div>

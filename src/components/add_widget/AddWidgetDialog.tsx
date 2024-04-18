@@ -41,6 +41,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, isOpen, onClo
         };
 
         fetchDevices();
+        
     }, []);
 
     const handleClose = () => {
@@ -62,7 +63,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, isOpen, onClo
         try {
             if (selectedDevice && selectedWidget) {
 
-                widgetModel.addWidget(selectedDevice._id, roomId, selectedWidget.title, selectedWidget.type, -1, -1, selectedWidget.row_span, selectedWidget.col_span)
+                widgetModel.addWidget(selectedDevice._id, roomId, selectedWidget.title, selectedWidget.type, selectedWidget.history_range, -1, -1, selectedWidget.row_span, selectedWidget.col_span)
                     .then((response) => {
                         onClose();
                     })
