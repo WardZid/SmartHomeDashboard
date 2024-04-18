@@ -8,10 +8,11 @@ import * as deviceModel from '../../models/Device'
 
 
 interface WidgetItemProps {
-    widget: widget.Widget
+    widget: widget.Widget;
+    onDetailsOpen: (widgetId:string) => void;
 }
 
-const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
+const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
     const navigate = useNavigate();
     const [deviceState, setDeviceState] = useState(widget.device.measurement.state);
     const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
@@ -32,6 +33,9 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                 console.error('Error updating device state:', error);
             }
         }
+    };
+    const handleOpenDetails= () => {
+      onDetailsOpen(widget._id);
     };
 
     useEffect(() => {
@@ -135,7 +139,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget }) => {
                     <div>
                         <div
                             className="relative rounded-sm text-xl hover:dark:bg-slate-500"
-                            onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}>
+                            onClick= {handleOpenDetails}>
                             <svg fill="currentColor" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#000000" strokeWidth="0.00024000000000000003"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="0.048"></g><g id="SVGRepo_iconCarrier"><path d="M3,4V20a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1V4a1,1,0,0,0-1-1H4A1,1,0,0,0,3,4ZM5,5H19V19H10V15a1,1,0,0,0-1-1H5Zm6.293,7.707a1,1,0,0,1,0-1.414L14.086,8.5H13a1,1,0,0,1,0-2h3.5a1.01,1.01,0,0,1,.382.077A1,1,0,0,1,17.5,7.5V11a1,1,0,0,1-2,0V9.914l-2.793,2.793A1,1,0,0,1,11.293,12.707Z"></path></g></svg>
 
                         </div>

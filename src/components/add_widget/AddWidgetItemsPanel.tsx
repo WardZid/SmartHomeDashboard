@@ -88,7 +88,7 @@ const AddWidgetItemsPanel: React.FC<AddWidgetItemsPanelProps> = ({ device, onSel
 
                     >
                         <WidgetItem
-                            widget={sampleWidget}
+                            widget={sampleWidget} onDetailsOpen={()=>{}}
                         />
                     </div>
                 </div>

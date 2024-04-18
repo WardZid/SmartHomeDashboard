@@ -10,6 +10,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/settings/SettingsDialog';
 import AddWidgetDialog from '../components/add_widget/AddWidgetDialog';
 import { AuthenticationError } from '../models/User';
+import WidgetDetailsDialog from '../components/room/WidgetDetailsDialog';
 
 
 const Dashboard: React.FC = () => {
@@ -21,6 +22,8 @@ const Dashboard: React.FC = () => {
   const [newRoomName, setNewRoomName] = useState<string>('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
+  const [isWidgetDetailsDialogOpen, setIsWidgetDetailsDialogOpen] = useState(false);
+  const [WidgetDetailsId, setWidgetDetailsId] = useState<string>('');
 
 
 
@@ -133,6 +136,17 @@ const Dashboard: React.FC = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
 
+  const handleWidgetDetailsOpen = (widgetId:string) => {
+    setWidgetDetailsId(widgetId);
+    toggleWidgetDialogDetails();
+  };
+
+  const toggleWidgetDialogDetails = () => {
+    if (WidgetDetailsId) {
+      setIsWidgetDetailsDialogOpen(!isWidgetDetailsDialogOpen);
+    }
+  };
+
   const toggleAddWidgetDialog = () => {
     //if no room is selected (shouldnt happen), the dialog wont open
     if (selectedRoom) {
@@ -223,7 +237,7 @@ const Dashboard: React.FC = () => {
                   text-dark-blue dark:text-orange
                     font-bold 
                     rounded-lg py-1 px-2
-                    ${selectedRoom? "" : 'opacity-20'}`}
+                    ${selectedRoom ? "" : 'opacity-20'}`}
                 onClick={toggleAddWidgetDialog}>
                 Add Widget
               </button>
@@ -233,7 +247,7 @@ const Dashboard: React.FC = () => {
               className="overflow-y-scroll flex-grow"
             >
               {/* Render RoomDashboard component if a room is selected */}
-              {selectedRoom && <RoomDashboard roomId={selectedRoom._id} />}
+              {selectedRoom && <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} />}
             </div>
           </div>
 
@@ -241,7 +255,9 @@ const Dashboard: React.FC = () => {
 
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
-      <AddWidgetDialog roomId={selectedRoom? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
+      <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
+      <WidgetDetailsDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} widgetId={WidgetDetailsId} />
+
     </div>
 
   );
