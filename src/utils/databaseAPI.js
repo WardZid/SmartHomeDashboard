@@ -368,3 +368,25 @@ export async function getDevices(homeId) {
   };
   return await findMany("devices", requestData);
 }
+
+export async function addHistoryEntries(deviceId, historyEntries) {
+
+  try {
+    const endpoint = dataEndpoint + "/updateOne";
+
+    const requestData = {
+      filter: {
+        _id: { $oid: deviceId },
+      },
+      update: {
+        $push: {
+          history: { $each: historyEntries },
+        },
+      },
+    };
+    const response = await send(endpoint, "devices", requestData);
+  } catch (error) {
+    console.error("Error adding history entries:", error);
+    throw error;
+  }
+}
