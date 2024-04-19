@@ -369,6 +369,7 @@ export async function getDevices(homeId) {
   return await findMany("devices", requestData);
 }
 
+//adds sample data
 export async function addHistoryEntries(deviceId, historyEntries) {
 
   try {
