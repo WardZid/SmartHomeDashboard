@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import * as widgetModel from '../../models/Widget';
 import 'react-time-picker/dist/TimePicker.css'; // Import TimePicker CSS
 import 'react-clock/dist/Clock.css'; // Import Clock CSS
-import { PlusCircle, MinusCircle } from 'react-feather';
 
 interface WidgetDetailsDialogProps {
     roomId: string;
