@@ -67,3 +67,8 @@ export async function updateWidgetLocationAndSize(widgetId: string, row: number,
 export async function updateWidgetHistoryRange(widgetId: string, historyRange: string) {
     return await dbAPI.updateWidgetHistoryRange(widgetId, historyRange);
 }
+
+
+export async function deleteWidget(widgetId: string) {
+    return await dbAPI.deleteWidget(widgetId);
+}

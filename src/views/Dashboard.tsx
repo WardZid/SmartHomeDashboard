@@ -136,7 +136,7 @@ const Dashboard: React.FC = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
 
-  const handleWidgetDetailsOpen = (widgetId:string) => {
+  const handleWidgetDetailsOpen = (widgetId: string) => {
     setWidgetDetailsId(widgetId);
     toggleWidgetDialogDetails();
   };
@@ -256,7 +256,7 @@ const Dashboard: React.FC = () => {
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
       <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
-      <WidgetDetailsDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} widgetId={WidgetDetailsId} />
+      <WidgetDetailsDialog widgetId={WidgetDetailsId} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
 

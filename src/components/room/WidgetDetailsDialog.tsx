@@ -1,54 +1,79 @@
 import React, { useEffect, useState } from "react";
-import * as user from "../../models/User";
-import Dialog from '../generic/Dialog';
-import Clock from 'react-clock';
 import { useNavigate } from "react-router-dom";
+import * as user from "../../models/User";
+import * as eventModel from "../../models/Event";
 import * as widgetModel from '../../models/Widget';
-import 'react-time-picker/dist/TimePicker.css'; // Import TimePicker CSS
-import 'react-clock/dist/Clock.css'; // Import Clock CSS
+import Dialog from '../generic/Dialog';
 
 interface WidgetDetailsDialogProps {
-    roomId: string;
+    widgetId: string;
     isOpen: boolean;
     onClose: () => void;
-    widgetId: string;
 }
 
-interface ScheduleItem {
-    day: string;
-    time: string;
-    active: boolean;
-}
 
-const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ isOpen, onClose, widgetId }) => {
+const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isOpen, onClose }) => {
     const navigate = useNavigate();
+
     const [widget, setWidget] = useState<widgetModel.Widget>();
-    const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
-    const [selectedDay, setSelectedDay] = useState<string>('Monday');
-    const [selectedHour, setSelectedHour] = useState<string>('00');
-    const [selectedMinute, setSelectedMinute] = useState<string>('00');
-    const [showActivationTime, setShowActivationTime] = useState<boolean>(false);
-    const [showDaysSelection, setShowDaysSelection] = useState<boolean>(false); // Declare here
+    const [eventSchedule, setEventSchedule] = useState<eventModel.Event[]>([]);
+
+    //new event time and state for entry
+    const [newEventTime, setNewEventTime] = useState<string>('00:00');
+    const [newState, setNewState] = useState<string>('0');
+
+    //display only
     const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
+
     useEffect(() => {
-        const fetchWidget = async () => {
+        if (isOpen) {
+
+            const fetchWidget = () => {
+                try {
+                    widgetModel
+                        .getWidget(widgetId)
+                        .then((widgetData) => {
+                            setWidget(widgetData);
+
+                        })
+                } catch (error) {
+                    if (error instanceof user.AuthenticationError) {
+                        user.logOut();
+                        navigate("/login");
+                        console.log("Credentials Expired");
+                    } else {
+                        console.error('Error fetching widgets:', error);
+                    }
+                }
+            };
+
+            fetchWidget();
+        }
+    }, [isOpen]);
+
+    useEffect(() => {
+        if (widget) {
+
             try {
-                const widgetData = await widgetModel.getWidget(widgetId);
-                setWidget(widgetData);
+                eventModel
+                    .getEvents(widget.device_id)
+                    .then((events) => {
+                        setEventSchedule(events);
+                    })
             } catch (error) {
                 if (error instanceof user.AuthenticationError) {
                     user.logOut();
                     navigate("/login");
                     console.log("Credentials Expired");
                 } else {
-                    console.error('Error fetching widgets:', error);
+                    console.error('Error fetching events:', error);
                 }
             }
-        };
 
-        fetchWidget();
+        }
     }, [widget]);
+
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -59,128 +84,222 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ isOpen, onClo
     }, []);
 
     const handleDeleteWidget = async () => {
-        try {
-            // Perform deletion of the widget from the database
-            // await widgetModel.deleteWidget(widgetId);
-            // Close the dialog after successful deletion
-            onClose();
-        } catch (error) {
-            console.error('Error deleting widget:', error);
+        if (widget) {
+            try {
+
+                widgetModel.deleteWidget(widget._id).then(() => {
+
+                    handleClose();
+                });
+            } catch (error) {
+                console.error('Error deleting widget:', error);
+            }
         }
     };
 
     const handleClose = () => {
+        setWidget(undefined);
+        setEventSchedule([]);
+        setNewEventTime('00:00')
+        setNewState('');
         onClose();
     };
 
     const handleAddToSchedule = () => {
-        const hour = parseInt(selectedHour);
-        const minute = parseInt(selectedMinute);
+        if (widget) {
+            if (newState === '')
+                return;
 
-        if (isNaN(hour) || hour < 0 || hour > 23 || isNaN(minute) || minute < 0 || minute > 59) {
-            alert("Please enter valid hour (0-23) and minute (0-59).");
-            return;
-        }
+            //preparing time for event
+            const [hourStr, minuteStr] = newEventTime.split(":");
+            const hour = parseInt(hourStr, 10);
+            const minute = parseInt(minuteStr, 10);
 
-        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-        if (!schedule.find(item => item.day === selectedDay && item.time === time)) {
-            setSchedule([...schedule, { day: selectedDay, time: time, active: false }]);
-            setSelectedHour('00');
-            setSelectedMinute('00');
-        }
-    };
-
-    const handleToggleActivationTime = () => {
-        setShowActivationTime(!showActivationTime);
-    };
-
-    const handleToggleTime = (day: string, time: string) => {
-        setSchedule(schedule.map(item => {
-            if (item.day === day && item.time === time) {
-                return { ...item, active: !item.active };
+            if (isNaN(hour) || isNaN(minute)) {
+                console.error("Invalid time input format");
+                return null;
             }
-            return item;
-        }));
+
+            const now = new Date();
+            const eventDateTime = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                hour,
+                minute
+            );
+
+            // Check if the time has already passed today
+            if (eventDateTime < now) {
+                // add 1 day 
+                eventDateTime.setDate(eventDateTime.getDate() + 1);
+            }
+
+            eventModel
+                .addEvent(widget.device_id, eventDateTime, '0000000', newState, true)
+                .then((response) => {
+                    setNewEventTime('00:00')
+                    setNewState('');
+
+                    const newEvent: eventModel.Event = {
+                        _id: response.insertedId,
+                        device_id: widget.device_id,
+                        datetime: eventDateTime,
+                        week_days: "0000000",
+                        state: newState,
+                        active: true,
+                    }
+
+                    eventSchedule.push(newEvent);
+                });
+        }
     };
 
-    const handleDeleteScheduleItem = (index: number) => {
-        const newSchedule = [...schedule];
-        newSchedule.splice(index, 1);
-        setSchedule(newSchedule);
+    const handleDeleteScheduleItem = (eventId: string,) => {
+        eventModel.deleteEvent(eventId).then(() => {
+            const updatedEventSchedule = eventSchedule.filter(item => item._id !== eventId); //copy array without this event
+            setEventSchedule(updatedEventSchedule);
+        });
     };
 
-    const handleSaveToSchedule = () => {
-        // Save schedule to database or perform other actions
-    };
+    const handleToggleWeekDay = (eventId: string, daysOfWeek: string, dayIndex: number) => {
+        if (widget) {
 
+            let daysArray = daysOfWeek.split('');
+
+            // Flip the bit at the corresponding index
+            daysArray[dayIndex] = daysArray[dayIndex] === '0' ? '1' : '0';
+
+            const updatedDaysOfWeek = daysArray.join('');
+
+
+            eventModel.updateDaysOfWeek(eventId, updatedDaysOfWeek).then(() => {
+
+                // Update the eventSchedule state
+                const updatedEventSchedule = [...eventSchedule]; // Create a copy of the current state
+                const updatedItemIndex = updatedEventSchedule.findIndex(item => item._id === eventId); // Find the index of the updated item
+                if (updatedItemIndex !== -1) {
+                    updatedEventSchedule[updatedItemIndex].week_days = updatedDaysOfWeek; // Update the days of the week in the copy
+                    setEventSchedule(updatedEventSchedule); // Update the state with the modified copy
+                }
+            })
+
+        }
+    }
+    const handleToggleEventActive = (eventId: string) => {
+        //TODO
+    }
 
     return (
         <Dialog dialogTitle={widget ? widget.title : 'Widget does not exist'} isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
 
             <div className="flex flex-col h-full">
-                <div className="flex items-center border-b border-light-blue pb-4 justify-evenly">
-                   
-                        <h6 className="text-base opacity-70">Current Time</h6>
-                        <p className="text-lg font-bold">{`${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`}</p>
+                <div className="flex items-center pb-4 justify-evenly">
+
+                    <h6 className="text-base opacity-70">Current Time</h6>
+                    <p className="text-lg font-bold">{`${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`}</p>
 
                 </div>
                 <div className="flex-grow overflow-auto p-4">
-                    <div className="flex flex-row justify-center items-baseline">
-                       {/*  <h6 className="text-base opacity-70 px-2 font-bold">Add Event</h6> */}
-                        <div className="flex items-center">
+                    <div className="flex flex-row justify-around p-1 items-end border border-light-blue rounded">
+                        {
+                            widget &&
+                            widget.device.measurement.type === "bool" &&
+                            <div className="flex flex-col items-center">
+                                <div className="w-full text-sm text-slate-500">Do</div>
+                                <button
+                                    className={`rounded w-24 p-1 px-4  text-off-white ${newState === '0' || newState === '' ? 'bg-rose-800' : 'bg-lime-800'}`}
+                                    onClick={() => setNewState(newState === '0' || newState === '' ? '1' : '0')}
+                                >
+                                    {newState === '0' || newState === '' ? 'Turn Off' : 'Turn On'}
+                                </button>
+                            </div>
+
+                        }
+                        {
+                            widget &&
+                            widget.device.measurement.type === "int" &&
+                            <div className="flex flex-col items-center">
+                                <div className="w-full text-sm text-slate-500">Set</div>
+                                <input
+                                    type="number"
+                                    value={newState}
+                                    step={1}
+                                    min={widget.device.measurement.min}
+                                    max={widget.device.measurement.max}
+                                    onChange={(e) => setNewState(e.target.value)}
+                                    className="border dark:border-slate-700 rounded p-1 text-center dark:bg-slate-700 w-32"
+                                    placeholder="-"
+                                />
+                            </div>
+                        }
+
+                        <div className="flex flex-col items-center">
+                            <div className="w-full text-sm text-slate-500">At</div>
                             <input
-                                type="text"
-                                value={selectedHour}
-                                onChange={(e) => setSelectedHour(e.target.value)}
-                                className="border border-gray-300 rounded mr-2 w-16 p-1 text-center dark:bg-slate-700"
-                                placeholder="HH"
+                                type="time"
+                                value={newEventTime}
+                                onChange={(e) => setNewEventTime(e.target.value)}
+                                className="rounded p-1 text-center dark:bg-slate-700 w-32"
                             />
-                            :
-                            <input
-                                type="text"
-                                value={selectedMinute}
-                                onChange={(e) => setSelectedMinute(e.target.value)}
-                                className="border border-gray-300 rounded ml-2 w-16 p-1 text-center dark:bg-slate-700"
-                                placeholder="MM"
-                            />
-                            <button className="ml-2 bg-blue-500 text-white px-3 py-1 rounded font-bold" onClick={handleAddToSchedule}>Add Event</button>
                         </div>
+                        <button className={`bg-light-blue p-1 rounded h-12 w-16 text-base font-semibold ${newState === '' ? 'opacity-45' : ''} `} onClick={handleAddToSchedule}>Add</button>
+
                     </div>
 
-                    <div className={`mt-4 ${schedule.length > 2 ? 'overflow-y-scroll max-h-40' : ''}`}>
+                    <div className={`overflow-y-scroll h-80 max-h-96`}>
                         <ul>
-                            {schedule.map((item, index) => (
-                                <li key={index} className="mt-2 flex flex-col gap-2 p-4 rounded-lg bg-slate-200 dark:bg-slate-800">
+                            {eventSchedule.map((item) => (
+                                <li key={item._id} className="mt-2 flex flex-col gap-2 p-4 rounded-lg bg-slate-200 dark:bg-slate-800">
                                     <div className="flex flex-row items-center justify-between">
 
-                                        <span className="mr-4 text-2xl font-bold">{item.time}</span>
+                                        <span className="mr-4 text-2xl font-bold">{new Date(item.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                         <button
-                                            className={`ml-4 ${item.active ? 'bg-blue-500' : 'bg-gray-400'} rounded-full w-12 h-6 relative focus:outline-none`}
-                                            onClick={() => handleToggleTime(item.day, item.time)}
+                                            className={`ml-4 ${item.active ? 'bg bg-light-blue' : 'bg-gray-400'} rounded-full w-12 h-6 relative focus:outline-none`}
+                                            onClick={() => handleToggleEventActive(item._id)}
                                         >
                                             <span
                                                 className={`block w-6 h-6 bg-white rounded-full shadow-md transform duration-300 ${item.active ? 'translate-x-6' : 'translate-x-0'}`}
-                                            ></span>
+                                            />
                                         </button>
+                                    </div>
+                                    <div>
+                                        <h6 className="font-semibold text-sm text-slate-500">Set Device to: </h6>
+                                        <div className="font-bold">
+                                            {
+                                                widget &&
+                                                widget.device.measurement.type === "bool" &&
+                                                <div className={`rounded w-24 p-1 px-4  text-off-white text-center ${item.state === "0" ? 'bg-rose-800' : 'bg-lime-800'}`}>
+                                                    {item.state === '0' ? 'OFF' : 'ON'}
+                                                </div>
+                                            }
+                                            {
+                                                widget &&
+                                                widget.device.measurement.type === "int" &&
+                                                <div className={`rounded w-24 p-1 px-4 text-center border border-slate-500`}>
+                                                    {item.state}
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                     <div className="flex flex-row justify-between items-end">
                                         <div className="flex flex-col">
                                             <h6 className="font-semibold text-sm text-slate-500">Repeat</h6>
                                             <div className="flex flex-row gap-1">
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  `}>Sun</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  `}>Mon</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  `}>Tue</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 `}>Wed</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  `}>Thu</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700  `}>Fri</button>
-                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 `}>Sat</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 64 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 0) }} >Sun</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 32 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 1) }} >Mon</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 16 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 2) }} >Tue</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 8 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 3) }} >Wed</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 4 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 4) }} >Thu</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 2 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 5) }} >Fri</button>
+                                                <button className={`px-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700 ${parseInt(item.week_days, 2) & 1 ? "bg-slate-300 dark:bg-slate-700" : ''} `} onClick={() => { handleToggleWeekDay(item._id, item.week_days, 6) }} >Sat</button>
                                             </div>
                                         </div>
                                         <img
                                             className="h-6 opacity-50 hover:opacity-70 cursor-pointer"
                                             src={`${process.env.PUBLIC_URL}/icons/delete-room.png`}
                                             alt="Delete"
-                                            onClick={() => handleDeleteScheduleItem(index)}
+                                            onClick={() => handleDeleteScheduleItem(item._id)}
                                         />
                                     </div>
                                 </li>
@@ -190,7 +309,7 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ isOpen, onClo
                 </div>
 
                 <div className="border-t border-light-blue px-4 pt-4 flex flex-row-reverse">
-                    <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={handleDeleteWidget}>Delete Widget </button>
+                    <button className="px-4 py-2 rounded text-rose-500 font-bold" onClick={handleDeleteWidget}>Delete Widget </button>
                 </div>
             </div>
 

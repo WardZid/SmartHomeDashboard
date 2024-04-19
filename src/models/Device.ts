@@ -1,5 +1,4 @@
 import * as dbAPI from "../utils/databaseAPI";
-import * as lsAPI from "../utils/localStorage";
 import * as userModel from "./User"
 
 export interface Device {
@@ -57,7 +56,7 @@ export async function getDevices(): Promise<Device[]> {
         return devices;
     } catch (error) {
         // Handle errors
-        console.error('Error fetching rooms:', error);
-        throw new Error('Failed to fetch rooms');
+        console.error('Error fetching devices:', error);
+        throw new Error('Failed to fetch devices');
     }
 }

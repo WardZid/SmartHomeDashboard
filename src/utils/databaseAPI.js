@@ -268,6 +268,15 @@ export async function getWidget(widgetId) {
   return (await aggregate("widgets", requestData))[0];
 }
 
+export async function deleteWidget(widgetId) {
+  const requestData = {
+    filter: {
+      _id: { $oid: widgetId },
+    },
+  };
+  return await deleteOne("widgets", requestData);
+}
+
 export async function getWidgets(roomId) {
   const requestData = {
     pipeline: [
@@ -369,9 +378,52 @@ export async function getDevices(homeId) {
   return await findMany("devices", requestData);
 }
 
+export async function insertEvent(
+  deviceId,
+  eventDateTime,
+  weekDays,
+  state,
+  active
+) {
+  const requestData = {
+    document: {
+      device_id: { $oid: deviceId },
+      datetime: eventDateTime,
+      week_days: weekDays,
+      state: state,
+      active: active,
+    },
+  };
+  return await insertOne("events", requestData);
+}
+
+export async function deleteEvent(eventId) {
+  const requestData = {
+    filter: {
+      _id: { $oid: eventId },
+    },
+  };
+  return await deleteOne("events", requestData);
+}
+
+export async function getEvents(deviceId) {
+  const requestData = {
+    filter: {
+      device_id: { $oid: deviceId },
+    },
+  };
+  return await findMany("events", requestData);
+}
+
+export async function updateDaysOfWeek(eventId, daysOfWeek) {
+  const updateData = {
+    week_days: daysOfWeek,
+  };
+  return await updateOne("events", updateData, eventId);
+}
+
 //adds sample data
 export async function addHistoryEntries(deviceId, historyEntries) {
-
   try {
     const endpoint = dataEndpoint + "/updateOne";
 
