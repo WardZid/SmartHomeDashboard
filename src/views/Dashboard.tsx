@@ -44,13 +44,41 @@ const Dashboard: React.FC = () => {
 
   //sidebar visibility
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarVisibleUserPreference, setsidebarVisibleUserPreference] = useState(true);
+
+  const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
+  const [isScreenSmall, setIsScreenSmall] = useState(false);
+
+  const updateSidebarVisibility = () => {
+    setIsScreenSmall(window.innerWidth < 768); //768 is a very logical num
+  };
+
+  useEffect(() => {
+    // console.log("sidebarVisibleUserPreference");
+
+    setSidebarVisible(sidebarVisibleUserPreference);
+  }, [sidebarVisibleUserPreference]);
+
+  useEffect(() => {
+    // console.log("isScreenSmall");
+    if (isScreenSmall) {
+      if (sidebarVisible) {
+        setSidebarVisible(false);
+      }
+    } else {
+      // console.log("preference");
+      // console.log(sidebarVisibleUserPreference);
+      setSidebarVisible(sidebarVisibleUserPreference);
+    }
+  }, [isScreenSmall]);
+
+  const toggleSidebarUserPref = () => {
+    setsidebarVisibleUserPreference(!sidebarVisibleUserPreference);
+  };
+
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
   };
-
-  const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
-
-
   useEffect(() => {
     const checkLoggedIn = async () => {
       const loggedIn = await user.isLoggedIn();
@@ -101,6 +129,12 @@ const Dashboard: React.FC = () => {
 
     checkLoggedIn();
     fetchRooms();
+
+    //listener to close the side menu if the screen is too thin
+    updateSidebarVisibility();
+    window.addEventListener('resize', updateSidebarVisibility);
+    return () => window.removeEventListener('resize', updateSidebarVisibility);
+
   }, []);
 
   useEffect(() => {
@@ -115,7 +149,7 @@ const Dashboard: React.FC = () => {
   const handleCreateRoom = async () => {
     try {
       if (newRoomName) {
-        console.log(newRoomName);
+        // console.log(newRoomName);
         await room.addRoom(newRoomName);
         // After successfully adding the room, fetch the updated list of rooms
         const updatedRooms = await room.getRooms();
@@ -140,7 +174,7 @@ const Dashboard: React.FC = () => {
       const updatedRooms = await room.getRooms();
       setRooms(updatedRooms);
 
-      console.log(rooms);
+      // console.log(rooms);
 
 
     } catch (error) {
@@ -191,6 +225,75 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const renderSidebarCtrl = () => {
+    {/* svgs for closing and opening sidebar */ }
+    return (
+      <div className={`h-full px-1 flex flex-col justify-center `}>
+        <div className="cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-slate-500"
+
+          onMouseEnter={() => setIsSidebarToggleHovered(true)}
+          onMouseLeave={() => setIsSidebarToggleHovered(false)}
+        >
+          {isSidebarToggleHovered ? (
+            (
+              sidebarVisible ?
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 28"
+                  width="16"
+                  height="28"
+                  onClick={toggleSidebarUserPref}
+                >
+                  <path
+                    d="M8 4A1 1 0 0 1 8.64 4.23A1 1 0 0 1 8.77 5.64L4.29 11L8.61 16.37A1 1 0 0 1 8.46 17.78A1 1 0 0 1 7 17.63L2.17 11.63A1 1 0 0 1 2.17 10.36L7.17 4.36A1 1 0 0 1 8 4Z"
+                    fill="currentColor"
+                    transform="translate(2,3) "
+                  />
+                </svg>
+
+                :
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 28"
+                  width="16"
+                  height="28"
+                  onClick={toggleSidebarUserPref}
+                >
+                  <path
+                    d="M10 19a1 1 0 0 1-.64-.23 1 1 0 0 1-.13-1.41L13.71 12 9.39 6.63a1 1 0 0 1 .15-1.41 1 1 0 0 1 1.46.15l4.83 6a1 1 0 0 1 0 1.27l-5 6A1 1 0 0 1 10 19z"
+                    fill="currentColor"
+                    transform="translate(-4,2)"
+                  />
+                </svg>
+            )
+          )
+            :
+            (
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 28"
+                width="16"
+                height="28"
+              >
+                <line
+                  x1="1"
+                  y1="0"
+                  x2="1"
+                  y2="24"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                />
+              </svg>
+            )
+          }
+        </div>
+      </div>
+
+    );
+  }
   return (
     <div className={darkMode ? 'dark' : ''}>
       <div
@@ -201,9 +304,10 @@ const Dashboard: React.FC = () => {
       >
         <div className="flex h-full flex-row overflow-hidden">
 
-          <div className={`bg-off-white dark:bg-dark-blue overflow-hidden w-${sidebarVisible ? '52' : '0'} transition-all duration-500 ease-in-out`}>
+          {/*sidebar*/}
+          <div className={`overflow-hidden ${isScreenSmall && sidebarVisible ? 'fixed h-full z-10 w-60 flex flex-row' : ''}  w-${sidebarVisible ? '52' : '0'} transition-all duration-500 ease-in-out`}>
 
-            <div className={`h-full flex flex-col px-2 pt-4 min-w-52`}>
+            <div className={`h-full flex flex-col px-2 pt-4 min-w-52 bg-off-white dark:bg-dark-blue `}>
 
               <div className="flex justify-center items-center pb-4">
                 <div onClick={handleEyeClick}>
@@ -262,83 +366,27 @@ const Dashboard: React.FC = () => {
                 </button>
               </div>
             </div>
+            {isScreenSmall && sidebarVisible &&
+              <div className="relative h-full  top-0 ">
+
+                {renderSidebarCtrl()}
+              </div>}
           </div>
 
-          {/* svgs for closing and opening sidebar */}
-          <div className={`h-full px-1 flex flex-col justify-center`}>
-            <div className="cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-slate-500"
+          {renderSidebarCtrl()}
 
-              onMouseEnter={() => setIsSidebarToggleHovered(true)}
-              onMouseLeave={() => setIsSidebarToggleHovered(false)}
-            >
-              {isSidebarToggleHovered ? (
-                (
-                  sidebarVisible ?
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 28"
-                      width="16"
-                      height="28"
-                      onClick={toggleSidebar}
-                    >
-                      <path
-                        d="M8 4A1 1 0 0 1 8.64 4.23A1 1 0 0 1 8.77 5.64L4.29 11L8.61 16.37A1 1 0 0 1 8.46 17.78A1 1 0 0 1 7 17.63L2.17 11.63A1 1 0 0 1 2.17 10.36L7.17 4.36A1 1 0 0 1 8 4Z"
-                        fill="currentColor"
-                        transform="translate(2,3) "
-                      />
-                    </svg>
 
-                    :
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 28"
-                      width="16"
-                      height="28"
-                      onClick={toggleSidebar}
-                    >
-                      <path
-                        d="M10 19a1 1 0 0 1-.64-.23 1 1 0 0 1-.13-1.41L13.71 12 9.39 6.63a1 1 0 0 1 .15-1.41 1 1 0 0 1 1.46.15l4.83 6a1 1 0 0 1 0 1.27l-5 6A1 1 0 0 1 10 19z"
-                        fill="currentColor"
-                        transform="translate(-5,2)"
-                      />
-                    </svg>
-                )
-              )
-                :
-                (
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 28"
-                    width="16"
-                    height="28"
-                  >
-                    <line
-                      x1="1"
-                      y1="0"
-                      x2="1"
-                      y2="24"
-                      stroke="currentColor"
-                      stroke-width="4"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                )
-              }
-            </div>
-          </div>
-
+          {/*main area of dashboard*/}
           <div className="flex-grow overflow-y-hidden flex flex-col">
             <div
               className="
             flex flex-row
             px-4 py-2">
               <div className="flex-grow flex flex-row text-2xl font-bold">
-                <div className="dark:text-off-white text-dark-blue">Smart </div>
-                <div className="dark:text-off-white text-orange">Home </div>
-                <div className="dark:text-off-white text-dark-blue">Automation </div>
-                <div className="dark:text-off-white text-orange">Dashboard</div>
+                <div className="dark:text-off-white text-dark-blue">{isScreenSmall ? "S." : "Smart "}</div>
+                <div className="dark:text-off-white text-orange">{isScreenSmall ? "H." : "Home "}</div>
+                <div className="dark:text-off-white text-dark-blue">{isScreenSmall ? "A." : "Automation "}</div>
+                <div className="dark:text-off-white text-orange">{isScreenSmall ? "D." : "Dashboard "}</div>
               </div>
 
               <button
@@ -369,7 +417,6 @@ const Dashboard: React.FC = () => {
           </div>
 
         </div>
-
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
       <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} onAddWidget={toggleWidgetRefreshFlag} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
