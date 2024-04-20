@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../components/Logo';
-import * as userModel from '../models/User'
+
 import { useDarkMode } from '../contexts/DarkModeContext';
+
+import * as userModel from '../models/User'
+
+import Logo from '../components/Logo';
 import Input from '../components/generic/Input';
 
 const LoginPage: React.FC = () => {
@@ -27,6 +30,12 @@ const LoginPage: React.FC = () => {
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleLogin();
+    }
   };
 
   const handleLogin = () => {
@@ -73,6 +82,7 @@ const LoginPage: React.FC = () => {
                 value={username}
                 isValid={isValidInput}
                 onChange={handleUsernameChange}
+                onKeyDown={handleKeyPress} 
               />
               <Input
                 type="password"
@@ -80,6 +90,7 @@ const LoginPage: React.FC = () => {
                 value={password}
                 isValid={isValidInput}
                 onChange={handlePasswordChange}
+                onKeyDown={handleKeyPress} 
               />
               <button className="w-full font-bold py-2 rounded bg-light-blue hover:bg-opacity-90 active:bg-opacity-70 text-off-white dark:text-dark-blue "
                 onClick={handleLogin}>

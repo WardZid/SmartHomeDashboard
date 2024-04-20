@@ -5,6 +5,7 @@ interface InputProps {
     placeholder?: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     isValid?: (value: string) => boolean;
     mandatory?: boolean;
     infoText?: string;
@@ -15,7 +16,9 @@ const Input: React.FC<InputProps> = ({
     placeholder = "",
     value,
     onChange,
+    onKeyDown,
     isValid,
+    mandatory,
     infoText
 }) => {
     const [showInfo, setShowInfo] = useState(false);
@@ -33,6 +36,7 @@ const Input: React.FC<InputProps> = ({
                 placeholder={placeholder}
                 value={value}
                 onChange={handleValueChange}
+                onKeyDown={onKeyDown}
                 className={`w-full mb-4 px-3 py-2 rounded bg-white dark:bg-slate-500 dark:placeholder-slate-400 ${isValidInput ? '' : 'border-red-500'
                     }`}
             />
