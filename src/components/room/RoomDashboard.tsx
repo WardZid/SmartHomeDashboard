@@ -8,20 +8,23 @@ import "/node_modules/react-resizable/css/styles.css"
 const ReactGridLayout = WidthProvider(RGL);
 
 interface RoomDashboardProps {
-  widgets: widgetModel.Widget[];
+  roomId: string;
   onDetailsOpen: (widgetId: string) => void;
 }
 
-const RoomDashboard: React.FC<RoomDashboardProps> = ({ widgets, onDetailsOpen }) => {
-  
+const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen }) => {
+  const [widgets, setWidgets] = useState<widgetModel.Widget[]>([]);
+
   const [layout, setLayout] = useState<Layout[]>([]);
 
   useEffect(() => {
 
     const fetchWidgts = async () => {
       try {
+        const widgetsData = await widgetModel.getWidgets(roomId);
+        setWidgets(widgetsData);
         // Generate layout based on widget data
-        const newLayout: Layout[] = widgets.map((widget) => ({
+        const newLayout: Layout[] = widgetsData.map((widget) => ({
           i: widget._id, // Use widget id as the unique identifier
           x: widget.col,
           y: widget.row,
@@ -35,7 +38,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ widgets, onDetailsOpen })
     };
 
     fetchWidgts();
-  }, [widgets]);
+  }, [roomId]);
 
   const onLayoutChange = (layout: Layout[]) => {
     layout.forEach(async (item) => {

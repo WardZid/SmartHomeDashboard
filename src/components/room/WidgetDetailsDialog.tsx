@@ -7,14 +7,12 @@ import Dialog from '../generic/Dialog';
 
 interface WidgetDetailsDialogProps {
     widgetId: string;
-    widgets: widgetModel.Widget[];
-    setWidgets: React.Dispatch<React.SetStateAction<widgetModel.Widget[]>>;
     isOpen: boolean;
     onClose: () => void;
 }
 
 
-const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, widgets, setWidgets, isOpen, onClose }) => {
+const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const [widget, setWidget] = useState<widgetModel.Widget>();
@@ -31,26 +29,26 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, wid
     useEffect(() => {
         if (isOpen) {
 
-            // const fetchWidget = () => {
-            //     try {
-            //         widgetModel
-            //             .getWidget(widgetId)
-            //             .then((widgetData) => {
-            //                 setWidget(widgetData);
-            //             })
-            //     } catch (error) {
-            //         if (error instanceof user.AuthenticationError) {
-            //             user.logOut();
-            //             navigate("/login");
-            //             console.log("Credentials Expired");
-            //         } else {
-            //             console.error('Error fetching widgets:', error);
-            //         }
-            //     }
-            // };
+            const fetchWidget = () => {
+                try {
+                    widgetModel
+                        .getWidget(widgetId)
+                        .then((widgetData) => {
+                            setWidget(widgetData);
 
-            // fetchWidget();
-            setWidget(widgets.find(widget => widget._id === widgetId));
+                        })
+                } catch (error) {
+                    if (error instanceof user.AuthenticationError) {
+                        user.logOut();
+                        navigate("/login");
+                        console.log("Credentials Expired");
+                    } else {
+                        console.error('Error fetching widgets:', error);
+                    }
+                }
+            };
+
+            fetchWidget();
         }
     }, [isOpen]);
 
@@ -89,14 +87,10 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, wid
         if (widget) {
             try {
 
-                widgetModel
-                    .deleteWidget(widget._id)
-                    .then((response) => {
-                        if (response.deletedCount > 0) {
-                            setWidgets(widgets.filter(widget => widget._id !== widgetId));
-                        }
-                        handleClose();
-                    });
+                widgetModel.deleteWidget(widget._id).then(() => {
+
+                    handleClose();
+                });
             } catch (error) {
                 console.error('Error deleting widget:', error);
             }

@@ -5,7 +5,6 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 
 import * as user from '../models/User';
 import * as room from '../models/Room';
-import * as widgetModel from '../models/Widget';
 
 import RoomDashboard from '../components/room/RoomDashboard';
 import RoomItem from '../components/room/RoomItem';
@@ -29,9 +28,6 @@ const Dashboard: React.FC = () => {
   const [newRoomName, setNewRoomName] = useState<string>('');
 
   //widgets
-  const [widgets, setWidgets] = useState<widgetModel.Widget[]>([]);
-
-  //dialogs
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
   const [isWidgetDetailsDialogOpen, setIsWidgetDetailsDialogOpen] = useState(false);
@@ -90,25 +86,6 @@ const Dashboard: React.FC = () => {
     checkLoggedIn();
     fetchRooms();
   }, []);
-
-  useEffect(() => {
-
-    const fetchWidgts = async () => {
-      try {
-        if (selectedRoom) {
-
-          const widgetsData = await widgetModel.getWidgets(selectedRoom?._id);
-          setWidgets(widgetsData);
-
-        }
-      } catch (error) {
-        console.error('Error fetching widgets:', error);
-      }
-    };
-
-    fetchWidgts();
-  }, [selectedRoom]);
-
 
   useEffect(() => {
     //if the room deleted was the one selected, make sure to select another
@@ -301,11 +278,11 @@ const Dashboard: React.FC = () => {
               {/* Render RoomDashboard component if a room is selected */}
               {selectedRoom ?
 
-                <RoomDashboard widgets={widgets} onDetailsOpen={handleWidgetDetailsOpen} />
-                :
-                <div className="flex-grow flex flex-col justify-center h-full w-full text-2xl font-bold ">
-                  <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Take Control of Your Home!</div>
-                </div>
+                  <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} />
+                  :
+                  <div className="flex-grow flex flex-col justify-center h-full w-full text-2xl font-bold ">
+                    <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Take Control of Your Home!</div>
+                  </div>
               }
             </div>
           </div>
@@ -315,7 +292,7 @@ const Dashboard: React.FC = () => {
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
       <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
-      <WidgetDetailsDialog widgetId={widgetDetailsId} widgets={widgets} setWidgets={setWidgets} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
+      <WidgetDetailsDialog widgetId={widgetDetailsId} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
 
