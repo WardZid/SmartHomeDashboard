@@ -9,10 +9,10 @@ const ReactGridLayout = WidthProvider(RGL);
 
 interface RoomDashboardProps {
   roomId: string;
-  onDetailsOpen: (widgetId:string) => void;
+  onDetailsOpen: (widgetId: string) => void;
 }
 
-const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId,onDetailsOpen }) => {
+const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen }) => {
   const [widgets, setWidgets] = useState<widgetModel.Widget[]>([]);
 
   const [layout, setLayout] = useState<Layout[]>([]);
@@ -70,18 +70,25 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId,onDetailsOpen }) =
   };
 
   return (
-    <div className="">
-      <ReactGridLayout
-        {...gridProps}
-        layout={layout}
-        onLayoutChange={onLayoutChange}>
-        {widgets.map((widget) => (
-          <div
-            key={widget._id}>
-            <WidgetItem widget={widget} onDetailsOpen={onDetailsOpen} />
-          </div>
-        ))}
-      </ReactGridLayout>
+    <div>
+      {widgets.length > 0 ?
+
+        <ReactGridLayout
+          {...gridProps}
+          layout={layout}
+          onLayoutChange={onLayoutChange}>
+          {widgets.map((widget) => (
+            <div
+              key={widget._id}>
+              <WidgetItem widget={widget} onDetailsOpen={onDetailsOpen} />
+            </div>
+          ))}
+        </ReactGridLayout>
+        :
+        <div className="flex-grow flex flex-col justify-center h-full w-full font-bold ">
+          <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Add a widget to start</div>
+        </div>
+      }
     </div>
   );
 };
