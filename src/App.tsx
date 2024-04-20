@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
 
     <DarkModeProvider>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
