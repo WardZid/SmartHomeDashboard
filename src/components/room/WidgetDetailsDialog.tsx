@@ -186,8 +186,36 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isO
 
         }
     }
-    const handleToggleEventActive = (eventId: string) => {
-        //TODO
+    const handleToggleEventActive = (eventId: string, oldActive: boolean) => {
+
+
+        const updateActive = (eventId: string, activeState: boolean) => {
+            // Update the eventSchedule active
+            const updatedEventSchedule = [...eventSchedule]; // Create a copy of the current usestate of events
+            const updatedItemIndex = updatedEventSchedule.findIndex(item => item._id === eventId); // Find the index of the updated item
+            if (updatedItemIndex !== -1) {
+                updatedEventSchedule[updatedItemIndex].active = activeState;
+                setEventSchedule(updatedEventSchedule);
+            }
+        };
+
+        //UPDATE LOCAL VALUE 
+        const newActive = !oldActive;
+        updateActive(eventId, newActive);
+
+
+        eventModel
+            .updateActive(eventId, newActive)
+            .then((response) => {
+                if (response.modifiedCount === 0) {
+                    //IF MODIFICATION UNSUCCESSFUL, RETURN ACTIVE TO OLD VALUE
+                    updateActive(eventId, oldActive);
+                }
+            })
+            .catch((error) => {
+                //IF MODIFICATION UNSUCCESSFUL, RETURN ACTIVE TO OLD VALUE
+                updateActive(eventId, oldActive);
+            });
     }
 
     return (
@@ -256,7 +284,7 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isO
                                         <span className="mr-4 text-2xl font-bold">{new Date(item.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                         <button
                                             className={`ml-4 ${item.active ? 'bg bg-light-blue' : 'bg-gray-400'} rounded-full w-12 h-6 relative focus:outline-none`}
-                                            onClick={() => handleToggleEventActive(item._id)}
+                                            onClick={() => handleToggleEventActive(item._id, item.active)}
                                         >
                                             <span
                                                 className={`block w-6 h-6 bg-white rounded-full shadow-md transform duration-300 ${item.active ? 'translate-x-6' : 'translate-x-0'}`}

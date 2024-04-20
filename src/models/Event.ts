@@ -43,10 +43,15 @@ export async function getEvents(deviceId: string): Promise<Event[]> {
     }
 }
 
-export async function updateDaysOfWeek(eventId: string, daysOfWeek: string) {
-    return await dbAPI.updateDaysOfWeek(eventId, daysOfWeek);
-}
 
 export async function deleteEvent(eventId: string) {
     return await dbAPI.deleteEvent(eventId);
+}
+
+export async function updateDaysOfWeek(eventId: string, daysOfWeek: string) {
+    return await dbAPI.updateEventDaysOfWeek(eventId, daysOfWeek);
+}
+
+export async function updateActive(eventId: string, active: boolean) {
+    return await dbAPI.updateEventActive(eventId, active);
 }

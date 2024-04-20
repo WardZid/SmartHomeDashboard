@@ -19,6 +19,7 @@ code {
 
 * {
   @apply transition-colors duration-200;
+  @apply transition-transform duration-200;
 
   scrollbar-width: thin;
   scrollbar-color: #888 transparent;

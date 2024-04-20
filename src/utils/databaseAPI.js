@@ -415,9 +415,16 @@ export async function getEvents(deviceId) {
   return await findMany("events", requestData);
 }
 
-export async function updateDaysOfWeek(eventId, daysOfWeek) {
+export async function updateEventDaysOfWeek(eventId, daysOfWeek) {
   const updateData = {
     week_days: daysOfWeek,
+  };
+  return await updateOne("events", updateData, eventId);
+}
+
+export async function updateEventActive(eventId, active) {
+  const updateData = {
+    active: active,
   };
   return await updateOne("events", updateData, eventId);
 }
