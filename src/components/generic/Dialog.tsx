@@ -37,7 +37,7 @@ const Dialog: React.FC<DialogProps> = ({ dialogTitle, isOpen, allowCloseX, onClo
                  bg-off-white dark:bg-dark-blue
                  text-dark-blue dark:text-off-white">
                     <div className="flex flex-row justify-between p-6 border-b border-light-blue">
-                        <h1 className="text-2xl font-bold">{dialogTitle}</h1>
+                        <h1 className="text-xl font-bold">{dialogTitle}</h1>
                         {allowCloseX &&
                             <button
                                 className=""

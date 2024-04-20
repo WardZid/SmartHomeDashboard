@@ -306,7 +306,7 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
             <div className=" p-2 flex flex-col justify-between overflow-hidden flex-grow">
 
                 <div className="flex flex-row">
-                    <h1 className="text-xl font-semibold flex-grow">{widget.title}</h1>
+                    <h1 className="text-lg font-semibold flex-grow">{widget.title}</h1>
                     <div>
                         <div
                             className="relative rounded-sm text-xl hover:dark:bg-slate-500"

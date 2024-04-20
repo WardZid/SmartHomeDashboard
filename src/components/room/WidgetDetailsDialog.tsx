@@ -194,14 +194,14 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isO
         <Dialog dialogTitle={widget ? widget.title : 'Widget does not exist'} isOpen={isOpen} allowCloseX={true} onClose={handleClose}>
 
             <div className="flex flex-col h-full">
-                <div className="flex items-center pb-4 justify-evenly">
+                <div className="flex items-center justify-evenly">
 
                     <h6 className="text-base opacity-70">Current Time</h6>
                     <p className="text-lg font-bold">{`${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`}</p>
 
                 </div>
-                <div className="flex-grow overflow-auto p-4">
-                    <div className="flex flex-row justify-around p-1 items-end border border-light-blue rounded">
+                <div className="flex-grow overflow-auto p-1">
+                    <div className="flex flex-row justify-around p-1 mx-2 my-1 items-end border border-light-blue rounded">
                         {
                             widget &&
                             widget.device.measurement.type === "bool" &&
