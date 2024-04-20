@@ -72,3 +72,7 @@ export async function updateWidgetHistoryRange(widgetId: string, historyRange: s
 export async function deleteWidget(widgetId: string) {
     return await dbAPI.deleteWidget(widgetId);
 }
+
+export async function deleteWidgetsOfRoom(roomId: string) {
+    return await dbAPI.deleteWidgetsOfRoom(roomId);
+}

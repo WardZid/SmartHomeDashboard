@@ -32,6 +32,8 @@ export async function addRoom(roomName: string) {
 }
 
 export async function deleteRoom(roomId: string) {
+    //delete a room's widgets then the room iteself
+    await dbAPI.deleteWidgetsOfRoom(roomId);
     return await dbAPI.deleteRoom(roomId);
 }
 

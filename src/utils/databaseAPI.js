@@ -191,6 +191,12 @@ async function deleteOne(collectionName, requestData) {
   return response;
 }
 
+async function deleteMany(collectionName, requestData) {
+  const endpoint = dataEndpoint + "/deleteMany";
+  const response = await send(endpoint, collectionName, requestData);
+  return response;
+}
+
 export async function insertNewUserInfo(userId, firstName, lastName, homeId) {
   const requestData = {
     document: {
@@ -268,6 +274,33 @@ export async function getWidget(widgetId) {
   return (await aggregate("widgets", requestData))[0];
 }
 
+export async function insertWidget(
+  deviceId,
+  roomId,
+  title,
+  type,
+  historyRange,
+  row,
+  col,
+  rowSpan,
+  colSpan
+) {
+  const requestData = {
+    document: {
+      device_id: { $oid: deviceId },
+      room_id: { $oid: roomId },
+      title: title,
+      type: type,
+      history_range: historyRange,
+      row: row,
+      col: col,
+      row_span: rowSpan,
+      col_span: colSpan,
+    },
+  };
+  return await insertOne("widgets", requestData);
+}
+
 export async function deleteWidget(widgetId) {
   const requestData = {
     filter: {
@@ -275,6 +308,15 @@ export async function deleteWidget(widgetId) {
     },
   };
   return await deleteOne("widgets", requestData);
+}
+
+export async function deleteWidgetsOfRoom(roomId) {
+  const requestData = {
+    filter: {
+      room_id: { $oid: roomId },
+    },
+  };
+  return await deleteMany("widgets", requestData);
 }
 
 export async function getWidgets(roomId) {
@@ -301,33 +343,6 @@ export async function getWidgets(roomId) {
   };
 
   return await aggregate("widgets", requestData);
-}
-
-export async function insertWidget(
-  deviceId,
-  roomId,
-  title,
-  type,
-  historyRange,
-  row,
-  col,
-  rowSpan,
-  colSpan
-) {
-  const requestData = {
-    document: {
-      device_id: { $oid: deviceId },
-      room_id: { $oid: roomId },
-      title: title,
-      type: type,
-      history_range: historyRange,
-      row: row,
-      col: col,
-      row_span: rowSpan,
-      col_span: colSpan,
-    },
-  };
-  return await insertOne("widgets", requestData);
 }
 
 export async function updateWidgetLocationAndSize(
@@ -404,6 +419,15 @@ export async function deleteEvent(eventId) {
     },
   };
   return await deleteOne("events", requestData);
+}
+
+export async function deleteEventsOfDevice(deviceId) {
+  const requestData = {
+    filter: {
+      device_id: { $oid: deviceId },
+    },
+  };
+  return await deleteMany("events", requestData);
 }
 
 export async function getEvents(deviceId) {

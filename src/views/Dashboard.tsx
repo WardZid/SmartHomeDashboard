@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { useDarkMode } from '../contexts/DarkModeContext';
+
 import * as user from '../models/User';
 import * as room from '../models/Room';
 
 import RoomDashboard from '../components/room/RoomDashboard';
 import RoomItem from '../components/room/RoomItem';
 import WatchingCircle from '../components/WatchingCircle';
-import { useDarkMode } from '../contexts/DarkModeContext';
 import SettingsDialog from '../components/settings/SettingsDialog';
 import AddWidgetDialog from '../components/add_widget/AddWidgetDialog';
-import { AuthenticationError } from '../models/User';
 import WidgetDetailsDialog from '../components/room/WidgetDetailsDialog';
 
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
+
+  //for display
   const [fullName, setFullName] = useState<string>("");
+
   const [rooms, setRooms] = useState<room.Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<room.Room | null>(null);
+
+  //new room
   const [newRoomName, setNewRoomName] = useState<string>('');
+
+  //widgets
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
   const [isWidgetDetailsDialogOpen, setIsWidgetDetailsDialogOpen] = useState(false);
-  const [WidgetDetailsId, setWidgetDetailsId] = useState<string>('');
+  const [widgetDetailsId, setWidgetDetailsId] = useState<string>('');
 
 
 
@@ -79,6 +87,16 @@ const Dashboard: React.FC = () => {
     fetchRooms();
   }, []);
 
+  useEffect(() => {
+    //if the room deleted was the one selected, make sure to select another
+    const selectedRoomIndex = rooms.findIndex(room => room._id === selectedRoom?._id);
+    if (selectedRoomIndex === -1) {
+      // If selected room does not exist, switch to the first room in the array or null if array is empty
+      setSelectedRoom(rooms.length > 0 ? rooms[0] : null);
+    }
+  }, [rooms]);
+
+
   const handleCreateRoom = async () => {
     try {
       if (newRoomName) {
@@ -106,6 +124,10 @@ const Dashboard: React.FC = () => {
       // After successfully deleting the room, fetch the updated list of rooms
       const updatedRooms = await room.getRooms();
       setRooms(updatedRooms);
+
+      console.log(rooms);
+
+
     } catch (error) {
       if (error instanceof user.AuthenticationError) {
         user.logOut();
@@ -142,7 +164,7 @@ const Dashboard: React.FC = () => {
   };
 
   const toggleWidgetDialogDetails = () => {
-    if (WidgetDetailsId) {
+    if (widgetDetailsId) {
       setIsWidgetDetailsDialogOpen(!isWidgetDetailsDialogOpen);
     }
   };
@@ -195,6 +217,12 @@ const Dashboard: React.FC = () => {
             <h6 className="mt-6 px-2 text-base opacity-70">Rooms</h6>
 
             <div className="flex-grow flex flex-col">
+
+              {/* if no rooms, show helpful msg */}
+              {rooms.length === 0 &&
+
+                <div className="text-center mt-5 opacity-90">Create a room to start!</div>
+              }
 
               {rooms.map(room => (
                 <RoomItem
@@ -256,7 +284,7 @@ const Dashboard: React.FC = () => {
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
       <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
-      <WidgetDetailsDialog widgetId={WidgetDetailsId} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
+      <WidgetDetailsDialog widgetId={widgetDetailsId} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
 

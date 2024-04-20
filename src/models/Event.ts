@@ -48,6 +48,11 @@ export async function deleteEvent(eventId: string) {
     return await dbAPI.deleteEvent(eventId);
 }
 
+
+export async function deleteEventsOfDevice(deviceId: string) {
+    return await dbAPI.deleteEventsOfDevice(deviceId);
+}
+
 export async function updateDaysOfWeek(eventId: string, daysOfWeek: string) {
     return await dbAPI.updateEventDaysOfWeek(eventId, daysOfWeek);
 }
