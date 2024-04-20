@@ -474,3 +474,4 @@ export async function addHistoryEntries(deviceId, historyEntries) {
     throw error;
   }
 }
+
