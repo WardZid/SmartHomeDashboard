@@ -43,7 +43,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen }) 
   const onLayoutChange = (layout: Layout[]) => {
     layout.forEach(async (item) => {
       try {
-        // TODO crate an update all instead of update one to minimize # of api calls
+        // TODO (optional) crate an update all instead of update one to minimize # of api calls
         await widgetModel.updateWidgetLocationAndSize(
           item.i,
           item.y,
