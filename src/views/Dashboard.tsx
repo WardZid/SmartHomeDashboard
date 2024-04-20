@@ -272,10 +272,18 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div
-              className="overflow-y-scroll flex-grow"
+              className="overflow-y-scroll flex-grow "
             >
+
               {/* Render RoomDashboard component if a room is selected */}
-              {selectedRoom && <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} />}
+              {selectedRoom ?
+
+                  <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} />
+                  :
+                  <div className="flex-grow flex flex-col justify-center h-full w-full text-2xl font-bold ">
+                    <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Take Control of Your Home!</div>
+                  </div>
+              }
             </div>
           </div>
 
