@@ -42,6 +42,14 @@ const Dashboard: React.FC = () => {
     setWidgetRefreshFlag(!widgetRefreshFlag);
   };
 
+  //sidebar visibility
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible);
+  };
+
+  const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
+
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -183,7 +191,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-
   return (
     <div className={darkMode ? 'dark' : ''}>
       <div
@@ -194,64 +201,131 @@ const Dashboard: React.FC = () => {
       >
         <div className="flex h-full flex-row overflow-hidden">
 
-          <div className="bg-off-white dark:bg-dark-blue pt-4 w-52 flex flex-col px-2">
+          <div className={`bg-off-white dark:bg-dark-blue overflow-hidden w-${sidebarVisible ? '52' : '0'} transition-all duration-500 ease-in-out`}>
 
-            <div className="flex justify-center items-center pb-4">
-              {/*TODO dark mode fix*/}
-              <div onClick={handleEyeClick}>
-                <WatchingCircle outerCircleColor={darkMode ? "#EEEEEE" : "#042A35"} innerCircleColor={darkMode ? "#042A35" : "#EEEEEE"} />
+            <div className={`h-full flex flex-col px-2 pt-4 min-w-52`}>
+
+              <div className="flex justify-center items-center pb-4">
+                <div onClick={handleEyeClick}>
+                  <WatchingCircle outerCircleColor={darkMode ? "#EEEEEE" : "#042A35"} innerCircleColor={darkMode ? "#042A35" : "#EEEEEE"} />
+                </div>
+                <h1 className="px-2">Hello, {fullName}!</h1>
               </div>
-              <h1 className="px-2">Hello, {fullName}!</h1>
-            </div>
 
-            <div className="py-1 px-1 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer rounded-lg flex flex-col">
-              <input
-                type="text"
-                className="text-lg px-2 bg-transparent border-none focus:outline-none"
-                placeholder="Enter room name"
-                value={newRoomName}
-                onChange={handleChangeNewRoomName}
-              />
-
-              <button
-                className="text-lg font-bold px-2 border-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600
-                cursor-pointer rounded-lg"
-                onClick={handleCreateRoom}
-              >
-                Create
-              </button>
-            </div>
-            <h6 className="mt-6 px-2 text-base opacity-70">Rooms</h6>
-
-            <div className="flex-grow flex flex-col">
-
-              {/* if no rooms, show helpful msg */}
-              {rooms.length === 0 &&
-
-                <div className="text-center mt-5 opacity-90">Create a room to start!</div>
-              }
-
-              {rooms.map(room => (
-                <RoomItem
-                  key={room._id}
-                  room={room}
-                  onSelect={handleRoomSelect}
-                  onDelete={handleDeleteRoom}
-                  isSelected={selectedRoom !== null && selectedRoom._id === room._id}
+              <div className="py-1 px-1 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer rounded-lg flex flex-col">
+                <input
+                  type="text"
+                  className="text-lg px-2 bg-transparent border-none focus:outline-none"
+                  placeholder="Enter room name"
+                  value={newRoomName}
+                  onChange={handleChangeNewRoomName}
                 />
-              ))}
 
+                <button
+                  className="text-lg font-bold px-2 border-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600
+                cursor-pointer rounded-lg"
+                  onClick={handleCreateRoom}
+                >
+                  Create
+                </button>
+              </div>
+              <h6 className="mt-6 px-2 text-base opacity-70">Rooms</h6>
+
+              <div className="flex-grow flex flex-col">
+
+                {/* if no rooms, show helpful msg */}
+                {rooms.length === 0 &&
+
+                  <div className="text-center mt-5 opacity-90">Create a room to start!</div>
+                }
+
+                {rooms.map(room => (
+                  <RoomItem
+                    key={room._id}
+                    room={room}
+                    onSelect={handleRoomSelect}
+                    onDelete={handleDeleteRoom}
+                    isSelected={selectedRoom !== null && selectedRoom._id === room._id}
+                  />
+                ))}
+
+              </div>
+
+              <div className="flex justify-center items-center py-2">
+                <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
+                  onClick={toggleSettingsDialog}>
+                  Settings
+                </button>
+                <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
+                  onClick={handleLogout}>
+                  Log Out
+                </button>
+              </div>
             </div>
+          </div>
 
-            <div className="flex justify-center items-center py-2">
-              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
-                onClick={toggleSettingsDialog}>
-                Settings
-              </button>
-              <button className="flex-grow mx-1 px-2 py-1 rounded hover:bg-slate-300 dark:hover:bg-slate-700"
-                onClick={handleLogout}>
-                Log Out
-              </button>
+          {/* svgs for closing and opening sidebar */}
+          <div className={`h-full px-1 flex flex-col justify-center`}>
+            <div className="cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-slate-500"
+
+              onMouseEnter={() => setIsSidebarToggleHovered(true)}
+              onMouseLeave={() => setIsSidebarToggleHovered(false)}
+            >
+              {isSidebarToggleHovered ? (
+                (
+                  sidebarVisible ?
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 28"
+                      width="16"
+                      height="28"
+                      onClick={toggleSidebar}
+                    >
+                      <path
+                        d="M8 4A1 1 0 0 1 8.64 4.23A1 1 0 0 1 8.77 5.64L4.29 11L8.61 16.37A1 1 0 0 1 8.46 17.78A1 1 0 0 1 7 17.63L2.17 11.63A1 1 0 0 1 2.17 10.36L7.17 4.36A1 1 0 0 1 8 4Z"
+                        fill="currentColor"
+                        transform="translate(2,3) "
+                      />
+                    </svg>
+
+                    :
+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 28"
+                      width="16"
+                      height="28"
+                      onClick={toggleSidebar}
+                    >
+                      <path
+                        d="M10 19a1 1 0 0 1-.64-.23 1 1 0 0 1-.13-1.41L13.71 12 9.39 6.63a1 1 0 0 1 .15-1.41 1 1 0 0 1 1.46.15l4.83 6a1 1 0 0 1 0 1.27l-5 6A1 1 0 0 1 10 19z"
+                        fill="currentColor"
+                        transform="translate(-5,2)"
+                      />
+                    </svg>
+                )
+              )
+                :
+                (
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 28"
+                    width="16"
+                    height="28"
+                  >
+                    <line
+                      x1="1"
+                      y1="0"
+                      x2="1"
+                      y2="24"
+                      stroke="currentColor"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                )
+              }
             </div>
           </div>
 
