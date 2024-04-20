@@ -7,12 +7,13 @@ import Dialog from '../generic/Dialog';
 
 interface WidgetDetailsDialogProps {
     widgetId: string;
+    onDeleteWidget: () => void;
     isOpen: boolean;
     onClose: () => void;
 }
 
 
-const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isOpen, onClose }) => {
+const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, onDeleteWidget, isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const [widget, setWidget] = useState<widgetModel.Widget>();
@@ -88,7 +89,7 @@ const WidgetDetailsDialog: React.FC<WidgetDetailsDialogProps> = ({ widgetId, isO
             try {
 
                 widgetModel.deleteWidget(widget._id).then(() => {
-
+                    onDeleteWidget();
                     handleClose();
                 });
             } catch (error) {

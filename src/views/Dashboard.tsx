@@ -27,12 +27,19 @@ const Dashboard: React.FC = () => {
   //new room
   const [newRoomName, setNewRoomName] = useState<string>('');
 
+
   //widgets
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
   const [isWidgetDetailsDialogOpen, setIsWidgetDetailsDialogOpen] = useState(false);
   const [widgetDetailsId, setWidgetDetailsId] = useState<string>('');
 
+
+  //refreshFlag
+  const [widgetRefreshFlag, setWidgetRefreshFlag] = useState<boolean>(false);
+  const toggleRefreshFlag = () => {
+    setWidgetRefreshFlag(!widgetRefreshFlag);
+  };
 
 
   useEffect(() => {
@@ -95,7 +102,6 @@ const Dashboard: React.FC = () => {
       setSelectedRoom(rooms.length > 0 ? rooms[0] : null);
     }
   }, [rooms]);
-
 
   const handleCreateRoom = async () => {
     try {
@@ -278,11 +284,11 @@ const Dashboard: React.FC = () => {
               {/* Render RoomDashboard component if a room is selected */}
               {selectedRoom ?
 
-                  <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} />
-                  :
-                  <div className="flex-grow flex flex-col justify-center h-full w-full text-2xl font-bold ">
-                    <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Take Control of Your Home!</div>
-                  </div>
+                <RoomDashboard roomId={selectedRoom._id} onDetailsOpen={handleWidgetDetailsOpen} refreshFlag={widgetRefreshFlag} />
+                :
+                <div className="flex-grow flex flex-col justify-center h-full w-full text-2xl font-bold ">
+                  <div className="w-full text-center opacity-70 dark:text-off-white text-dark-blue">Take Control of Your Home!</div>
+                </div>
               }
             </div>
           </div>
@@ -292,7 +298,7 @@ const Dashboard: React.FC = () => {
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
       <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
-      <WidgetDetailsDialog widgetId={widgetDetailsId} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
+      <WidgetDetailsDialog widgetId={widgetDetailsId} onDeleteWidget={toggleRefreshFlag} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
 

@@ -10,9 +10,10 @@ const ReactGridLayout = WidthProvider(RGL);
 interface RoomDashboardProps {
   roomId: string;
   onDetailsOpen: (widgetId: string) => void;
+  refreshFlag: boolean;
 }
 
-const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen }) => {
+const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen, refreshFlag }) => {
   const [widgets, setWidgets] = useState<widgetModel.Widget[]>([]);
 
   const [layout, setLayout] = useState<Layout[]>([]);
@@ -38,7 +39,7 @@ const RoomDashboard: React.FC<RoomDashboardProps> = ({ roomId, onDetailsOpen }) 
     };
 
     fetchWidgts();
-  }, [roomId]);
+  }, [roomId, refreshFlag]);
 
   const onLayoutChange = (layout: Layout[]) => {
     layout.forEach(async (item) => {
