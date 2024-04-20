@@ -12,11 +12,12 @@ import AddWidgetItemsPanel from "./AddWidgetItemsPanel";
 
 interface AddWidgetDialogProps {
     roomId: string;
+    onAddWidget: () => void;
     isOpen: boolean;
     onClose: () => void;
 }
 
-const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, isOpen, onClose }) => {
+const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, onAddWidget, isOpen, onClose }) => {
     const navigate = useNavigate();
     const [devices, setDevices] = useState<deviceModel.Device[]>([]);
     const [selectedDevice, setSelectedDevice] = useState<deviceModel.Device | null>(null);
@@ -41,7 +42,7 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, isOpen, onClo
         };
 
         fetchDevices();
-        
+
     }, []);
 
     const handleClose = () => {
@@ -65,7 +66,8 @@ const AddWidgetDialog: React.FC<AddWidgetDialogProps> = ({ roomId, isOpen, onClo
 
                 widgetModel.addWidget(selectedDevice._id, roomId, selectedWidget.title, selectedWidget.type, selectedWidget.history_range, -1, -1, selectedWidget.row_span, selectedWidget.col_span)
                     .then((response) => {
-                        onClose();
+                        onAddWidget();
+                        handleClose();
                     })
                     .catch((error) => {
                         if (error instanceof user.AuthenticationError) {

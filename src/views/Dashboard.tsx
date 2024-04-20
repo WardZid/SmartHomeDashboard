@@ -297,7 +297,7 @@ const Dashboard: React.FC = () => {
 
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
-      <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
+      <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} onAddWidget={toggleRefreshFlag} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
       <WidgetDetailsDialog widgetId={widgetDetailsId} onDeleteWidget={toggleRefreshFlag} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
