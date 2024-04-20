@@ -21,6 +21,7 @@ const Dashboard: React.FC = () => {
   //for display
   const [fullName, setFullName] = useState<string>("");
 
+  //sidebar rooms
   const [rooms, setRooms] = useState<room.Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<room.Room | null>(null);
 
@@ -35,9 +36,9 @@ const Dashboard: React.FC = () => {
   const [widgetDetailsId, setWidgetDetailsId] = useState<string>('');
 
 
-  //refreshFlag
+  //refresh Flag for when widgets are altered
   const [widgetRefreshFlag, setWidgetRefreshFlag] = useState<boolean>(false);
-  const toggleRefreshFlag = () => {
+  const toggleWidgetRefreshFlag = () => {
     setWidgetRefreshFlag(!widgetRefreshFlag);
   };
 
@@ -297,8 +298,8 @@ const Dashboard: React.FC = () => {
 
       </div>
       <SettingsDialog isOpen={isSettingsOpen} onClose={toggleSettingsDialog} />
-      <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} onAddWidget={toggleRefreshFlag} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
-      <WidgetDetailsDialog widgetId={widgetDetailsId} onDeleteWidget={toggleRefreshFlag} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
+      <AddWidgetDialog roomId={selectedRoom ? selectedRoom._id : ''} onAddWidget={toggleWidgetRefreshFlag} isOpen={isAddWidgetDialogOpen} onClose={toggleAddWidgetDialog} />
+      <WidgetDetailsDialog widgetId={widgetDetailsId} onDeleteWidget={toggleWidgetRefreshFlag} isOpen={isWidgetDetailsDialogOpen} onClose={toggleWidgetDialogDetails} />
 
     </div>
 
