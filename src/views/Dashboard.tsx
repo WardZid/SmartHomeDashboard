@@ -305,7 +305,7 @@ const Dashboard: React.FC = () => {
         <div className="flex h-full flex-row overflow-hidden">
 
           {/*sidebar*/}
-          <div className={`overflow-hidden ${isScreenSmall && sidebarVisible ? 'fixed h-full z-10 w-60 flex flex-row' : ''}  w-${sidebarVisible ? '52' : '0'} transition-all duration-500 ease-in-out`}>
+          <div className={`overflow-hidden ${isScreenSmall && sidebarVisible ? 'fixed h-full z-10 w-60 flex flex-row' : ''} ${sidebarVisible ? 'w-52' : 'w-0'} transition-all duration-500 ease-in-out`}>
 
             <div className={`h-full flex flex-col px-2 pt-4 min-w-52 bg-off-white dark:bg-dark-blue `}>
 
