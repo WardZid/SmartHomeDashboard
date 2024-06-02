@@ -14,6 +14,7 @@ interface WidgetItemProps {
 
 const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
     const navigate = useNavigate();
+    const [isHovered, setIsHovered] = useState(false);
     const [deviceState, setDeviceState] = useState(widget.device.measurement.state);
     // const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
     const chartRef = useRef<HTMLCanvasElement>(null);
@@ -284,6 +285,14 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
         widgetModel.updateWidgetHistoryRange(widget._id, range);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <div
             className={`
@@ -298,9 +307,12 @@ const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onDetailsOpen }) => {
             style={{
                 userSelect: 'none'
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
-            <div className="h-4 bg-light-blue
-             react-grid-drag-handle cursor-grab active:cursor-grabbing">
+            <div className={`h-4 
+            ${ isHovered? 'bg-orange' : 'bg-light-blue'}
+             react-grid-drag-handle cursor-grab active:cursor-grabbing`}>
                 {/*Top bar for moving*/}
             </div>
             <div className=" p-2 flex flex-col justify-between overflow-hidden flex-grow">
